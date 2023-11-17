@@ -4,9 +4,9 @@ Created on Tue Nov  7 19:58:30 2023
 
 @author: Aube
 """
-
 import os
 from math import *
+
 
 def list_of_files(directory, extension): # create a list of files name
 
@@ -15,7 +15,7 @@ def list_of_files(directory, extension): # create a list of files name
         if filename.endswith(extension):# verify the extention of the file
             files_names.append(filename)
             
-    return (files_names)
+    return files_names
 
 
 def name_of_presidents(files_name): # create a list of presidents name
@@ -41,26 +41,25 @@ def name_of_presidents(files_name): # create a list of presidents name
         if name[1] not in presidents_name : 
             presidents_name.append(name[1])
             
-    return(presidents_name)
+    return presidents_name
 
-def fill_dico(name, first_name): # create a dico : {"first name" : "name"}
+
+def fill_dico(full_name, file_list, name_list):  # create a dico : {"file_name" : "name"}
+
+    president_file = {}
+    for file in range(len(file_list)):
+        for name in range(len(name_list)):
+            if (name_list[name].split(" "))[0] in file_list[file]:
+                president_file[file_list[file]] = full_name[name]
+
+    return president_file
+
+
+def display_full_name(list): # display a dico as : key value
     
-    Presidents = {}
-    for i in range(len(name)):
-        Presidents[name[i]] = first_name[i]
-        
-    return(Presidents)
+    for name in list :
+        print(name)
 
-def display_full_name(dico_full_names): # display a dico as : key value
-    
-    for name in dico_full_names :
-        print(dico_full_names[name], name)
-
-# Create a list of lines of a file
-def list_lines_in_file(file) :
-    with open("cleaned2/"+ file, "r", encoding='utf-8') as f : 
-        lines = f.readlines()
-    return(lines)
 
 # Computation of Term Frequency
 def count_words(string): # create a dico : {"word" : occurence of the word }
@@ -70,14 +69,14 @@ def count_words(string): # create a dico : {"word" : occurence of the word }
     for word in list_words :
         if word not in words_dico and word != "" and word != "\n":
             words_dico[word] = list_words.count(word)
-    return(words_dico)
+    return words_dico
 
-    
+
 # Calcul of the IDF (Inverse Document Frequency)  
-def dico_IDF(dico_tot, dico_files):
+def dico_IDF(all_words, dico_files):
     
     IDF_score_dico = dict()
-    for word in dico_tot :
+    for word in all_words :
         word_in_file, IDF = 0, 0
         for file in dico_files :
             if word in dico_files[file] :
@@ -85,42 +84,37 @@ def dico_IDF(dico_tot, dico_files):
                 
         IDF = log(len(dico_files)/word_in_file)
         IDF_score_dico[word] = IDF
-    return(IDF_score_dico)
+    return IDF_score_dico
 
-# Calculate the TF-IDF matrix
-def mat_TF_IDF(dico_tot, dico_files, IDF):
+
+# Calculate the TF-IDF matrix of the shape : line = word ; column = file
+def mat_TF_IDF(all_words, dico_files, IDF):
     
     mat = []    
-    for word in dico_tot :
+    for word in all_words :
         line = []
         for file in dico_files :
-            if word in dico_files[file] : 
-                line.append(dico_files[file][word] * IDF[word])
+            if word in dico_files[file] :
+                TF = (dico_files[file][word]/len(dico_files[file]))
+                line.append(TF * IDF[word])
             else :
                 line.append(0)
         mat.append(line)   
-    return(mat)
+    return mat
 
-def less_important_words(dico_tot, mat):
-    
-    # Create a list with keys of dico_tot
-    dico_words = []
-    for key in dico_tot.keys():
-        dico_words.append(key) 
+
+def less_important_words(all_words, dico_tot, mat):
     
     # Create a list of less important words: with a TF-IDF vector equal to 0
     nonimportant_words = []
     for line in range(len(mat)) :
         if sum(mat[line])== 0 :
-            nonimportant_words.append(dico_words[line])
+            nonimportant_words.append(all_words[line])
     
-    return(nonimportant_words)
+    return nonimportant_words
 
-def higher_TF_IDF(dico_tot, mat):
 
-    dico_words = []
-    for key in dico_tot.keys():
-        dico_words.append(key)
+def higher_TF_IDF(all_words, dico_tot, mat):
 
     couple, biggest_vector = tuple(), float()
     list_words_biggest_vect = []
@@ -132,9 +126,31 @@ def higher_TF_IDF(dico_tot, mat):
     for line in range(len(mat)):
         couple = (sum(mat[line]),line)
         if biggest_vector == couple[0] :
-            list_words_biggest_vect.append(dico_words[line])
+            list_words_biggest_vect.append(all_words[line])
 
-    return(list_words_biggest_vect)
+    return list_words_biggest_vect
+
+
+def frequent_word_for_a_president(name, dico_of_files):
+    frequent_words = []
+    for file in dico_of_files :
+        if name in file :
+            most_frequent = max(dico_of_files[file].values())
+            for word in dico_of_files[file]:
+                if dico_of_files[file][word] == most_frequent and word not in frequent_words :
+                    frequent_words.append(word)
+
+    return frequent_words
+
+
+def term_research(term, dico_files, dico_name ):
+    term_in = []
+    for file in dico_files :
+        if term in dico_files[file] :
+            print(dico_name[file])
+            term_in.append((dico_name[file], dico_files[file][term]))
+    return term_in
+
 
 
             
