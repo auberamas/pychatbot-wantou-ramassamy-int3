@@ -22,7 +22,7 @@ if __name__ == '__main__':
     
     # Call the function display_full_name to diplay president name
     display_full_name(dico_presidents)
-    print()
+
 #----DICTIONARY------------------------------------------------------------------------------
     directory = "./cleaned"
     dictionary_of_files, total_dictionary = dict(), dict() 
@@ -54,5 +54,9 @@ if __name__ == '__main__':
     # Call the function less_important_words
     list_less_imp = less_important_words(total_dictionary, mat)
     print(list_less_imp)
+
+    #Call the function higher_TF_IDF
+    biggest_score_TF_IDF = higher_TF_IDF(total_dictionary, mat)
+    print(biggest_score_TF_IDF)
 
 

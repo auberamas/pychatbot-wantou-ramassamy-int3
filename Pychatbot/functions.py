@@ -116,7 +116,28 @@ def less_important_words(dico_tot, mat):
     
     return(nonimportant_words)
 
-            
+def higher_TF_IDF(dico_tot, mat):
+
+    dico_words = []
+    for key in dico_tot.keys():
+        dico_words.append(key)
+
+    couple, biggest_vector = tuple(), float()
+    list_words_biggest_vect = []
+    for line in range(len(mat)):
+        couple = (sum(mat[line]),line)
+        if biggest_vector < couple[0] :
+            biggest_vector = couple[0]
+
+    for line in range(len(mat)):
+        couple = (sum(mat[line]),line)
+        if biggest_vector == couple[0] :
+            list_words_biggest_vect.append(dico_words[line])
+
+    return(list_words_biggest_vect)
+
+
+
             
             
     
