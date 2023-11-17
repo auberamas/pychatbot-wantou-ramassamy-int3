@@ -22,7 +22,7 @@ for name in files_names :
     with open("speeches/"+ name, "r", encoding='utf-8') as f: #encoding to avoid problems with accents
         lines = f.readlines()
 
-    # Call the function turn-fils_in_lowercase
+    # Call the function turn-file_in_lowercase
     file_list_lowercase = turn_file_in_lowercase(lines)
     
     # Write the text in lower case on a new file

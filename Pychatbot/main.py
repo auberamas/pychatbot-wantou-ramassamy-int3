@@ -24,7 +24,7 @@ if __name__ == '__main__':
     display_full_name(dico_presidents)
     print()
 #----DICTIONARY------------------------------------------------------------------------------
-    directory = "./cleaned2"
+    directory = "./cleaned"
     dictionary_of_files, total_dictionary = dict(), dict() 
     string_of_file, total_string = str(), str()
     
