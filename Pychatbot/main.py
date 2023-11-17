@@ -20,7 +20,7 @@ if __name__ == '__main__':
     presidents_first_name = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
     dico_presidents = fill_dico(presidents_name, presidents_first_name)
     
-    # Call the function display_full_name to diplay president name
+    # Call the function display_full_name to display president name
     display_full_name(dico_presidents)
 
 #----DICTIONARY------------------------------------------------------------------------------
@@ -51,12 +51,25 @@ if __name__ == '__main__':
     IDF = dico_IDF(total_dictionary, dictionary_of_files)
     mat = mat_TF_IDF(total_dictionary, dictionary_of_files, IDF)
     
-    # Call the function less_important_words
+    # Call the function less_important_words and display the result
     list_less_imp = less_important_words(total_dictionary, mat)
-    print(list_less_imp)
+    print("Least important words in the document corpus :", list_less_imp)
+    print()
 
-    #Call the function higher_TF_IDF
+    #Call the function higher_TF_IDF and display the result
     biggest_score_TF_IDF = higher_TF_IDF(total_dictionary, mat)
-    print(biggest_score_TF_IDF)
+    print("Word(s) with the highest TD-IDF score : ",biggest_score_TF_IDF)
+
+    #Display the most repeated word(s) by President Chirac
+    frequent_words = []
+    for file in dictionary_of_files :
+        if "Chirac" in file :
+            most_frequent = max(dictionary_of_files[file].values())
+            for word in dictionary_of_files[file]:
+                if dictionary_of_files[file][word] == most_frequent and word not in frequent_words :
+                    frequent_words.append(word)
+    print(frequent_words)
+
+
 
 

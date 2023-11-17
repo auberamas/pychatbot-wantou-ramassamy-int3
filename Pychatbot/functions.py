@@ -137,7 +137,6 @@ def higher_TF_IDF(dico_tot, mat):
     return(list_words_biggest_vect)
 
 
-
             
             
     
