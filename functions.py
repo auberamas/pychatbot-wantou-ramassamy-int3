@@ -12,7 +12,7 @@ def list_of_files(directory, extension): # create a list of files name
 
     files_names = []
     for filename in os.listdir(directory): # scan the list of file in the directory
-        if filename.endswith(extension):# verify the extention of the file
+        if filename.endswith(extension): # verify the extention of the file
             files_names.append(filename)
             
     return files_names
@@ -55,7 +55,7 @@ def fill_dico(full_name, file_list, name_list):  # create a dico : {"file_name" 
     return president_file
 
 
-def display(liste, choice="\n"):  # display a dico as : key value
+def display(liste, choice="\n"):  # display a list
     count = 0
 
     for name in liste :
@@ -107,9 +107,9 @@ def mat_TF_IDF(all_words, dico_files, IDF):
     return mat
 
 
+# Create a list of less important words: with a TF-IDF vector equal to 0
 def less_important_words(all_words, dico_tot, mat):
-    
-    # Create a list of less important words: with a TF-IDF vector equal to 0
+
     nonimportant_words = []
     for line in range(len(mat)) :
         if sum(mat[line])== 0 :
@@ -118,6 +118,7 @@ def less_important_words(all_words, dico_tot, mat):
     return nonimportant_words
 
 
+# Create a list of the highest TF-IDF vector
 def higher_TF_IDF(all_words, dico_tot, mat):
 
     couple, biggest_vector = tuple(), float()
@@ -135,6 +136,7 @@ def higher_TF_IDF(all_words, dico_tot, mat):
     return list_words_biggest_vect
 
 
+# Create a list with the most repeated word(s) by a president
 def frequent_word_for_a_president(name, dico_of_files):
     frequent_words = []
     for file in dico_of_files :
@@ -147,6 +149,7 @@ def frequent_word_for_a_president(name, dico_of_files):
     return frequent_words
 
 
+# Create a dico to know the occurrence of a word in each president's speech
 def term_research(term, dico_files, dico_name ):
     term_in = dict()
     for file in dico_files :
