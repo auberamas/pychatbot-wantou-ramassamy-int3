@@ -67,7 +67,7 @@ if __name__ == '__main__':
     mat = mat_TF_IDF(all_words, dictionary_of_files, IDF)
 
 # ----Features---------------------------------------------------------------------------------
-    # Menu
+
     menu = ["1- Least important words of the corpus",
             "2- Word(s) with the highest TDF-IDF score",
             "3- The most repeated word by Chirac",
@@ -97,7 +97,6 @@ if __name__ == '__main__':
         print("Word(s) with the highest TD-IDF score : ", biggest_score_TF_IDF)
 
     if choice == 3:
-
         # Call the function frequent_word_for_a_president : display the most repeated word(s) by a President
         name = 'Chirac'
         frequent_words = frequent_word_for_a_president(name, dictionary_of_files)
@@ -124,6 +123,7 @@ if __name__ == '__main__':
         # Look for who said "climat" or "écologie" and who repeated it the most
         word1 = 'climat'
         word2 = 'écologie'
+        
         # Call the function term_research
         # Return a dico as : {president : occurrence of the word}
         repeated1 = term_research(word1, dictionary_of_files, dico_presidents)
@@ -144,8 +144,7 @@ if __name__ == '__main__':
         word_occurrence = dict()
 
         for word in all_words:
-            # Call the function term_research
-            # Give the president who said the word and how much
+            # Call the function term_research : give the presidents who said the word and how much
             word_occurrence = term_research(word, dictionary_of_files, dico_presidents)
 
             # Verify is all presidents are in word_occurrence
