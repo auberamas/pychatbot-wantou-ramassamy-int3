@@ -60,6 +60,7 @@ if __name__ == '__main__':
     for key in total_dictionary.keys():
         all_words.append(key)
     all_words.sort()
+    
 # ----Creation of the TF-IDF matrix ------------------------------------------------------------
     
     # Call the functions dico_IDF and mat_TF_IDF
@@ -123,7 +124,7 @@ if __name__ == '__main__':
         # Look for who said "climat" or "écologie" and who repeated it the most
         word1 = 'climat'
         word2 = 'écologie'
-        
+
         # Call the function term_research
         # Return a dico as : {president : occurrence of the word}
         repeated1 = term_research(word1, dictionary_of_files, dico_presidents)
