@@ -8,11 +8,11 @@ import os
 from math import *
 
 
-def list_of_files(directory, extension): # create a list of files name
+def list_of_files(directory, extension):  # create a list of files name
 
     files_names = []
-    for filename in os.listdir(directory): # scan the list of file in the directory
-        if filename.endswith(extension): # verify the extention of the file
+    for filename in os.listdir(directory):  # scan the list of file in the directory
+        if filename.endswith(extension):  # verify the extention of the file
             files_names.append(filename)
             
     return files_names
@@ -23,28 +23,30 @@ def name_of_presidents(files_name): # create a list of presidents name
     presidents_name = []
     for name in files_name :
         name = name.split('_') # create a list : [nomination, name.txt]
-        name[1] = name[1].strip('.txt')# clean the name from extension
+        name[1] = name[1].strip('.txt')  # Clean the name from extension
         
-        # clean the name from numbers
+        # Clean the name from numbers
         if name[1][-1].isdigit() :
             name[1] = name[1].replace(name[1][-1],"")
         
-        #add "'" 
+        # Add "'"
         if " " in name[1] :
-            sub_name = name[1].split(' ') # we work on the part after the space
+            sub_name = name[1].split(' ') # We work on the part after the space
             for char in range(len(sub_name[1])-1) :
+                # Try to find an uppercase next to a lowercase to put a "'" between
                if sub_name[1][char].islower() and sub_name[1][char+1].isupper() :
                     sub_name[1] = "'".join(sub_name[1][char:char+2]) + sub_name[1][char+2:]
-            name[1] = sub_name[0]+" " +sub_name[1]
+            name[1] = sub_name[0]+" " + sub_name[1]
             
-        # verify if the name is already in the list of names          
+        # Verify if the name is already in the list of names
         if name[1] not in presidents_name : 
             presidents_name.append(name[1])
             
     return presidents_name
 
 
-def fill_dico(full_name, file_list, name_list):  # create a dico : {"file_name" : "name"}
+# create a dico : {"file_name" : "name"}
+def fill_dico(full_name, file_list, name_list):
 
     president_file = {}
     for file in range(len(file_list)):
@@ -66,7 +68,7 @@ def display(liste, choice="\n"):  # display a list
 
 
 # Computation of Term Frequency
-def count_words(string): # create a dico : {"word" : occurence of the word }
+def count_words(string):  # create a dico : {"word" : occurrence of the word }
     
     list_words = string.split(" ")
     words_dico = dict()
@@ -84,7 +86,7 @@ def dico_IDF(all_words, dico_files):
         word_in_file, IDF = 0, 0
         for file in dico_files :
             if word in dico_files[file] :
-                word_in_file += 1 # To count the nb of file where is the word
+                word_in_file += 1  # To count the nb of file where is the word
                 
         IDF = log(len(dico_files)/word_in_file)
         IDF_score_dico[word] = IDF
@@ -121,13 +123,16 @@ def less_important_words(all_words, dico_tot, mat):
 # Create a list of the highest TF-IDF vector
 def higher_TF_IDF(all_words, dico_tot, mat):
 
-    couple, biggest_vector = tuple(), float()
+    couple, biggest_vector = tuple(), 0.0
     list_words_biggest_vect = []
+
+    # Look for the biggest vector in the matrix
     for line in range(len(mat)):
         couple = (sum(mat[line]),line)
         if biggest_vector < couple[0] :
             biggest_vector = couple[0]
 
+    # Search all vectors equals to the biggest vector
     for line in range(len(mat)):
         couple = (sum(mat[line]),line)
         if biggest_vector == couple[0] :
@@ -159,12 +164,3 @@ def term_research(term, dico_files, dico_name ):
             else :
                 term_in[dico_name[file]]= dico_files[file][term]
     return term_in
-
-
-
-
-            
-            
-    
-    
-

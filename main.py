@@ -20,6 +20,8 @@ if __name__ == '__main__':
     presidents_full_name = [presidents_first_name [i] + " " + presidents_name[i] for i in range(len(presidents_first_name ))]
 
     # Call the function display_full_name to display president name
+    print()
+    print("President's name of the corpus: ")
     display(presidents_full_name)
     print()
 
@@ -71,7 +73,7 @@ if __name__ == '__main__':
             "3- The most repeated word by Chirac",
             "4- Who spoke about 'nation' and who repeated it the most",
             "5- Who spoke about 'climate' or 'ecology' for the first time",
-            "6- What are words that all presidents said ?" ]
+            "6- What are words that all presidents said ?"]
 
     # Call the function display
     display(menu)
@@ -79,7 +81,7 @@ if __name__ == '__main__':
 
     # Ask the user to choice an action in the menu
     choice = 0
-    while choice < 1 or choice > len(menu) :
+    while choice < 1 or choice > len(menu):
         choice = int(input("Choose an action in the menu, enter it's number: "))
     print()
 
@@ -89,19 +91,19 @@ if __name__ == '__main__':
         print("Least important words in the document corpus :", list_less_imp)
         print()
 
-    if choice == 2 :
+    if choice == 2:
         # Call the function higher_TF_IDF and display the result
         biggest_score_TF_IDF = higher_TF_IDF(all_words, total_dictionary, mat)
         print("Word(s) with the highest TD-IDF score : ", biggest_score_TF_IDF)
 
-    if choice == 3 :
+    if choice == 3:
 
         # Call the function frequent_word_for_a_president : display the most repeated word(s) by a President
         name = 'Chirac'
         frequent_words = frequent_word_for_a_president(name, dictionary_of_files)
         print(f"Most repeated word(s) by President {name} :", frequent_words)
 
-    if choice == 4 :
+    if choice == 4:
         # Look for who said "nation" and who repeated it the most
         word = 'nation'
         # Call the function term_research
@@ -119,7 +121,7 @@ if __name__ == '__main__':
                 print(f'{president} is the one who repeated {word} the most')
 
     if choice == 5:
-        # Look for who said "nation" and who repeated it the most
+        # Look for who said "climat" or "écologie" and who repeated it the most
         word1 = 'climat'
         word2 = 'écologie'
         # Call the function term_research
@@ -134,35 +136,20 @@ if __name__ == '__main__':
             if date_president[name] < oldest:
                 name_oldest = name
                 oldest = date_president[name]
-        print(f'{name_oldest} is the first president to talk about {word1} or {word2}.')
+        print(f'{name_oldest} is the first president to talk about "{word1}" or "{word2}".')
 
-
-    if choice == 6: # à revoir
+    if choice == 6:
+        # Look for the words said by all presidents
         common_words = []
         word_occurrence = dict()
-        common = False
-        for word in all_words[:20]:
+
+        for word in all_words:
+            # Call the function term_research
+            # Give the president who said the word and how much
             word_occurrence = term_research(word, dictionary_of_files, dico_presidents)
-            print(word, word_occurrence)
+
+            # Verify is all presidents are in word_occurrence
             if len(word_occurrence) == len(presidents_full_name):
-                    common = True
-            if common == True:
                 common_words.append(word)
-
         print(common_words)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
