@@ -123,6 +123,7 @@ if __name__ == '__main__':
         word1 = 'climat'
         word2 = 'écologie'
         # Call the function term_research
+        # Return a dico as : {president : occurrence of the word}
         repeated1 = term_research(word1, dictionary_of_files, dico_presidents)
         repeated2 = term_research(word2, dictionary_of_files, dico_presidents)
 
@@ -136,8 +137,23 @@ if __name__ == '__main__':
         print(f'{name_oldest} is the first president to talk about {word1} or {word2}.')
 
 
-    if choice == 6:
-        print()
+    if choice == 6: # à revoir
+        common_words = []
+        word_occurrence = dict()
+        common = False
+        for word in all_words[:20]:
+            word_occurrence = term_research(word, dictionary_of_files, dico_presidents)
+            print(word, word_occurrence)
+            if len(word_occurrence) == len(presidents_full_name):
+                    common = True
+            if common == True:
+                common_words.append(word)
+
+        print(common_words)
+
+
+
+
 
 
 

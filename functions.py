@@ -162,6 +162,7 @@ def term_research(term, dico_files, dico_name ):
 
 
 
+
             
             
     
