@@ -38,13 +38,16 @@ if __name__ == '__main__':
     string_of_file, total_string = str(), str()
     
     # Creation of a dico of words occurrence for each file saved in dictionary_of_files
+    # Open each file in the directory
     for file in files_names :
-        
         with open(directory + "/" + file , "r", encoding = 'utf-8') as f:
             for line in f :
-                for word in (line.strip()).split(' ') :
+                # word run over a list of line's words without the '\n'
+                for word in (line.strip()).split(' ') : 
+                    # Create a string of all words in a file
                     string_of_file = string_of_file + " " + word
-        # Call the function count_words
+
+        # Call the function count_words which returns a dico as : {"word" : occurrence}
         dico_of_file = count_words(string_of_file)
         # Fill the dico dictionary_of_files as : {"name file" : dico of the file }
         dictionary_of_files[file] = dico_of_file
@@ -152,4 +155,3 @@ if __name__ == '__main__':
             if len(word_occurrence) == len(presidents_full_name):
                 common_words.append(word)
         print(common_words)
-

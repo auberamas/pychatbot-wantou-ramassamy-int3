@@ -67,7 +67,7 @@ def display(liste, choice="\n"):  # display a list
         count += 1
 
 
-# Computation of Term Frequency
+# Computation of the occurrence of words in a text
 def count_words(string):  # create a dico : {"word" : occurrence of the word }
     
     list_words = string.split(" ")

@@ -6,9 +6,9 @@ Created on Mon Nov  6 07:08:35 2023
 """
 from main import files_names
 from functions import *
-import string 
-# questions : can we use .lower() ?
+import string
 
+# Replace all uppercase by lowercase one by one
 def turn_file_in_lowercase(file_list):
     
     lowercase_file_list = []
@@ -23,7 +23,7 @@ def turn_file_in_lowercase(file_list):
 # Remove punctuation and put space instead of "'" and "-"
 def clean_file(file):
     
-    ponctuation = string.punctuation
+    ponctuation = string.punctuation # list of all punctuation
     cleaned_file = []
     for line in file :
         for char in line:
