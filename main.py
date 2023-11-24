@@ -35,11 +35,12 @@ if __name__ == '__main__':
 # ----Creation of dictionaries---------------------------------------------------------------------
     directory = "./cleaned"
     dictionary_of_files, total_dictionary = dict(), dict() 
-    string_of_file, total_string = str(), str()
+    total_string = str()
     
     # Creation of a dico of words occurrence for each file saved in dictionary_of_files
-    # Open each file in the directory
+    # Open each file of the directory
     for file in files_names :
+        dico_of_file, string_of_file = {}, str() # Start with empty dico and string for each file
         with open(directory + "/" + file , "r", encoding = 'utf-8') as f:
             for line in f :
                 # word run over a list of line's words without the '\n'
@@ -51,7 +52,8 @@ if __name__ == '__main__':
         dico_of_file = count_words(string_of_file)
         # Fill the dico dictionary_of_files as : {"name file" : dico of the file }
         dictionary_of_files[file] = dico_of_file
-        
+
+        # Create a string which is the concatenation of the string of the corpus
         total_string += string_of_file
     
     # Creation a dico of words occurrence for the corpus
@@ -94,6 +96,13 @@ if __name__ == '__main__':
         list_less_imp = less_important_words(all_words, total_dictionary, mat)
         print("Least important words in the document corpus :", list_less_imp)
         print()
+
+        """ 
+        how can we have a vector nul ?
+        all the word that we are working on are in at least one document
+        so TF is never null as well as IDF = ln(x+1),(x>=1), for each file
+        """
+
 
     if choice == 2:
         # Call the function higher_TF_IDF and display the result

@@ -86,9 +86,9 @@ def dico_IDF(all_words, dico_files):
         word_in_file, IDF = 0, 0
         for file in dico_files :
             if word in dico_files[file] :
-                word_in_file += 1  # To count the nb of file where is the word
+                word_in_file += 1  # Count the number of file where is the word
                 
-        IDF = log(len(dico_files)/word_in_file)
+        IDF = log((len(dico_files)/word_in_file)+1)  # Add 1 to avoid IDF = log(1) = 0
         IDF_score_dico[word] = IDF
     return IDF_score_dico
 
@@ -101,6 +101,7 @@ def mat_TF_IDF(all_words, dico_files, IDF):
         line = []
         for file in dico_files :
             if word in dico_files[file] :
+                # TF = occurrence of the word in the file / number of word in the file
                 TF = (dico_files[file][word]/len(dico_files[file]))
                 line.append(TF * IDF[word])
             else :
@@ -112,12 +113,14 @@ def mat_TF_IDF(all_words, dico_files, IDF):
 # Create a list of less important words: with a TF-IDF vector equal to 0
 def less_important_words(all_words, dico_tot, mat):
 
-    nonimportant_words = []
+    not_important_words = []
     for line in range(len(mat)) :
-        if sum(mat[line])== 0 :
-            nonimportant_words.append(all_words[line])
+        if sum(mat[line]) == 0 :
+            # does it work ?
+
+            not_important_words.append(all_words[line])
     
-    return nonimportant_words
+    return not_important_words
 
 
 # Create a list of the highest TF-IDF vector
