@@ -57,7 +57,8 @@ def fill_dico(full_name, file_list, name_list):
     return president_file
 
 
-def display(liste, choice="\n"):  # display a list
+# Display a list in two different ways
+def display(liste, choice="\n"):
     count = 0
 
     for name in liste :
@@ -113,13 +114,13 @@ def mat_TF_IDF(all_words, dico_files, IDF):
 # Create a list of the highest TF-IDF vector
 def vector_research(all_words, dico_tot, mat, vector):
 
-    couple = tuple()
+    vect_word = tuple()
     same_vect = []
 
     # Search all vectors equals to the biggest vector
     for line in range(len(mat)):
-        couple = (mat[line],line)
-        if vector == couple[0] :
+        vect_word = (sum(mat[line]),line)
+        if vector == vect_word[0] :
             same_vect.append(all_words[line])
 
     return same_vect

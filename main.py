@@ -4,7 +4,6 @@ Created on Sat Nov  4 14:33:02 2023
 
 @author: Aube
 """
-
 from functions import *
     
 # Call of the function list_of_files
@@ -12,6 +11,7 @@ directory = "./speeches"
 files_names = list_of_files(directory, "txt")
 
 if __name__ == '__main__':
+
     # Call of the function name_of_presidents
     presidents_name = name_of_presidents(files_names) # Return a list a president name
 
@@ -20,19 +20,20 @@ if __name__ == '__main__':
     presidents_full_name = [presidents_first_name [i] + " " + presidents_name[i] for i in range(len(presidents_first_name ))]
 
     # Call the function display_full_name to display president name
-    print()
+    print("-" * 60)
     print("President's name of the corpus: ")
     display(presidents_full_name)
+    print("-" * 60)
     print()
 
-    # Create a dictionary as : { 'name of file' : 'president full name'}
-    # Call the function fill_dico
+    # Call the function fill_dico to create a dictionary as : { 'name of file' : 'president full name'}
     dico_presidents = fill_dico(presidents_full_name, files_names, presidents_name)
     date_president = {"Valéry Giscard d'Estaing": 1974, "François Mitterrand": 1981,
                       "Jacques Chirac": 1995, "Nicolas Sarkozy": 2007, "François Hollande": 2012,
                       "Emmanuel Macron": 2017}
 
 # ----Creation of dictionaries---------------------------------------------------------------------
+
     directory = "./cleaned"
     dictionary_of_files, total_dictionary = dict(), dict() 
     total_string = str()
@@ -43,7 +44,7 @@ if __name__ == '__main__':
         dico_of_file, string_of_file = {}, str() # Start with empty dico and string for each file
         with open(directory + "/" + file , "r", encoding = 'utf-8') as f:
             for line in f :
-                # word run over a list of line's words without the '\n'
+                # Word run over a list of words from a line of the file without the '\n'
                 for word in (line.strip()).split(' ') : 
                     # Create a string of all words in a file
                     string_of_file = string_of_file + " " + word
@@ -82,31 +83,40 @@ if __name__ == '__main__':
             "6- What are words that all presidents said ?"]
 
     # Call the function display
+    print("-" * 60)
+    print("Menu of features: ")
     display(menu)
+    print("-" * 60)
     print()
 
     # Ask the user to choice an action in the menu
     choice = 0
+    # Verify that "choice" is available in the menu
     while choice < 1 or choice > len(menu):
         choice = int(input("Choose an action in the menu, enter it's number: "))
     print()
 
     if choice == 1:
         # Looking for the less important words (lowest TD-IDF score)
-        min_vector = min(mat)  # Calculate the lowest vector in the TF-IDF matrix
-        print(min_vector)
+        min_vector = sum(min(mat))  # Calculate the sum of the lowest vector's values in the TF-IDF matrix
+
         # Call the function vector_research to search all the vectors equal to the lowest one
         lowest_score_TF_IDF = vector_research(all_words, total_dictionary, mat, min_vector)
-        print("Least important words in the document corpus :", lowest_score_TF_IDF)
+        print("Least important words in the document corpus: ", end = "")
+        # Call the function display
+        display(lowest_score_TF_IDF, ", ")
         print()
 
     if choice == 2:
         # Looking for the most important words (highest TD-IDF score)
-        max_vector = max(mat)  # Calculate the highest vector in the TF-IDF matrix
+        max_vector = sum(max(mat))  # Calculate the sum highest vector's values in the TF-IDF matrix
 
         # Call the function vector_research to search all the vectors equal to the highest one
         biggest_score_TF_IDF = vector_research(all_words, total_dictionary, mat,  max_vector)
-        print("Word(s) with the highest TD-IDF score : ", biggest_score_TF_IDF)
+        print("Word(s) with the highest TD-IDF score: ", end = "")
+        # Call the function display
+        display(biggest_score_TF_IDF, ", ")
+        print()
 
     if choice == 3:
         # Call the function frequent_word_for_a_president : display the most repeated word(s) by a President
@@ -163,3 +173,6 @@ if __name__ == '__main__':
             if len(word_occurrence) == len(presidents_full_name):
                 common_words.append(word)
         print(common_words)
+
+# ajouter une fonctionnalité : delander à l'utilisateur si il veut
+# effectuer une autre action => entrer "again" sinon "stop" ???
