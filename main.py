@@ -92,21 +92,20 @@ if __name__ == '__main__':
     print()
 
     if choice == 1:
-        # Call the function less_important_words and display the result
-        list_less_imp = less_important_words(all_words, total_dictionary, mat)
-        print("Least important words in the document corpus :", list_less_imp)
+        # Looking for the less important words (lowest TD-IDF score)
+        min_vector = min(mat)  # Calculate the lowest vector in the TF-IDF matrix
+        print(min_vector)
+        # Call the function vector_research to search all the vectors equal to the lowest one
+        lowest_score_TF_IDF = vector_research(all_words, total_dictionary, mat, min_vector)
+        print("Least important words in the document corpus :", lowest_score_TF_IDF)
         print()
 
-        """ 
-        how can we have a vector nul ?
-        all the word that we are working on are in at least one document
-        so TF is never null as well as IDF = ln(x+1),(x>=1), for each file
-        """
-
-
     if choice == 2:
-        # Call the function higher_TF_IDF and display the result
-        biggest_score_TF_IDF = higher_TF_IDF(all_words, total_dictionary, mat)
+        # Looking for the most important words (highest TD-IDF score)
+        max_vector = max(mat)  # Calculate the highest vector in the TF-IDF matrix
+
+        # Call the function vector_research to search all the vectors equal to the highest one
+        biggest_score_TF_IDF = vector_research(all_words, total_dictionary, mat,  max_vector)
         print("Word(s) with the highest TD-IDF score : ", biggest_score_TF_IDF)
 
     if choice == 3:

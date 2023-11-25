@@ -110,38 +110,19 @@ def mat_TF_IDF(all_words, dico_files, IDF):
     return mat
 
 
-# Create a list of less important words: with a TF-IDF vector equal to 0
-def less_important_words(all_words, dico_tot, mat):
-
-    not_important_words = []
-    for line in range(len(mat)) :
-        if sum(mat[line]) == 0 :
-            # does it work ?
-
-            not_important_words.append(all_words[line])
-    
-    return not_important_words
-
-
 # Create a list of the highest TF-IDF vector
-def higher_TF_IDF(all_words, dico_tot, mat):
+def vector_research(all_words, dico_tot, mat, vector):
 
-    couple, biggest_vector = tuple(), 0.0
-    list_words_biggest_vect = []
-
-    # Look for the biggest vector in the matrix
-    for line in range(len(mat)):
-        couple = (sum(mat[line]),line)
-        if biggest_vector < couple[0] :
-            biggest_vector = couple[0]
+    couple = tuple()
+    same_vect = []
 
     # Search all vectors equals to the biggest vector
     for line in range(len(mat)):
-        couple = (sum(mat[line]),line)
-        if biggest_vector == couple[0] :
-            list_words_biggest_vect.append(all_words[line])
+        couple = (mat[line],line)
+        if vector == couple[0] :
+            same_vect.append(all_words[line])
 
-    return list_words_biggest_vect
+    return same_vect
 
 
 # Create a list with the most repeated word(s) by a president
