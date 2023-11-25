@@ -23,7 +23,6 @@ if __name__ == '__main__':
     print("-" * 60)
     print("President's name of the corpus: ")
     display(presidents_full_name)
-    print("-" * 60)
     print()
 
     # Call the function fill_dico to create a dictionary as : { 'name of file' : 'president full name'}
@@ -41,23 +40,23 @@ if __name__ == '__main__':
     # Creation of a dico of words occurrence for each file saved in dictionary_of_files
     # Open each file of the directory
     for file in files_names :
-        dico_of_file, string_of_file = {}, str() # Start with empty dico and string for each file
-        with open(directory + "/" + file , "r", encoding = 'utf-8') as f:
-            for line in f :
+        dico_of_file, string_of_file = {}, str()  # Start with empty dico and string for each file
+        with open(directory + "/" + file , "r", encoding = 'utf-8') as opened_file:
+            for line in opened_file : # Run over line of the file
                 # Word run over a list of words from a line of the file without the '\n'
                 for word in (line.strip()).split(' ') : 
                     # Create a string of all words in a file
                     string_of_file = string_of_file + " " + word
 
-        # Call the function count_words which returns a dico as : {"word" : occurrence}
+        # Call the function count_words which returns a dico as : {"word" : occurrence} for each file
         dico_of_file = count_words(string_of_file)
-        # Fill the dico dictionary_of_files as : {"name file" : dico of the file }
+        # Fill the dico dictionary_of_files as : {"file name" : dico of the file }
         dictionary_of_files[file] = dico_of_file
 
-        # Create a string which is the concatenation of the string of the corpus
+        # Create a string which is the concatenation of the string of all the corpus
         total_string += string_of_file
     
-    # Creation a dico of words occurrence for the corpus
+    # Creation of a dico of words occurrence for the corpus
     # Call the function count_words
     total_dictionary = count_words(total_string)
 
@@ -82,11 +81,10 @@ if __name__ == '__main__':
             "5- Who spoke about 'climate' or 'ecology' for the first time",
             "6- What are words that all presidents said ?"]
 
-    # Call the function display
     print("-" * 60)
     print("Menu of features: ")
+    # Call the function display
     display(menu)
-    print("-" * 60)
     print()
 
     # Ask the user to choice an action in the menu
@@ -119,8 +117,9 @@ if __name__ == '__main__':
         print()
 
     if choice == 3:
-        # Call the function frequent_word_for_a_president : display the most repeated word(s) by a President
+        # Look for the most frequent word of a president
         name = 'Chirac'
+        # Call the function frequent_word_for_a_president : display the most repeated word(s) by a President
         frequent_words = frequent_word_for_a_president(name, dictionary_of_files)
         print(f"Most repeated word(s) by President {name} :", frequent_words)
 
@@ -130,23 +129,23 @@ if __name__ == '__main__':
         # Call the function term_research
         repeated = term_research(word, dictionary_of_files, dico_presidents)
 
-        print(f'The word {word} is repeated by: ', end="")
+        print(f"The word '{word}' is repeated by: ", end="")
         # Call the function display to display presidents who spoke about 'nation'
         display(repeated.keys(), ", ")
 
-        # Who repeated 'nation' the most
-        max_word = max(repeated.values())
+        # Look for who repeated 'nation' the most
+        max_word = max(repeated.values()) # keep the occurrence of the most repeated word
         for name in repeated:
             if repeated[name] == max_word:
                 president = name
-                print(f'{president} is the one who repeated {word} the most')
+                print(f'{president} is the one who repeated {word} the most.')
 
     if choice == 5:
         # Look for who said "climat" or "écologie" and who repeated it the most
         word1 = 'climat'
         word2 = 'écologie'
 
-        # Call the function term_research
+        # Call the function term_research for word1 and word2
         # Return a dico as : {president : occurrence of the word}
         repeated1 = term_research(word1, dictionary_of_files, dico_presidents)
         repeated2 = term_research(word2, dictionary_of_files, dico_presidents)
