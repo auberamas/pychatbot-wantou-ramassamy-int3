@@ -6,7 +6,7 @@
 * Ariel WANTOU - [@Savratis56](https://github.com/Savratis56)
 * Aube RAMASSAMY - [@auberamas](https://github.com/auberamas)
  
-[➜ Link of our project : pychatbot-wantou-ramassamy-int3](https://github.com/auberamas/pychatbot-wantou-ramassamy-int3]
+[***➜ Link of our project : pychatbot-wantou-ramassamy-int3***](https://github.com/auberamas/pychatbot-wantou-ramassamy-int3]
 pychatbot-wantou-ramassamy-int3)
 
 ## Description of the project
