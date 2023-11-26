@@ -73,13 +73,6 @@ if __name__ == '__main__':
     # Call the functions mat_TF_IDF
     mat = mat_TF_IDF(all_words, dictionary_of_files, IDF)
 
-    # debug
-    """
-    print()
-    for word in range(len(all_words)) :
-        print(all_words[word], mat[word])
-    """
-
 # ----Features---------------------------------------------------------------------------------
 
     menu = ["1- Least important word(s) of the corpus",
