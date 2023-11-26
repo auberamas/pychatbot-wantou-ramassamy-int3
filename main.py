@@ -111,18 +111,18 @@ if __name__ == '__main__':
 
             # Call the function vector_research to search all the vectors equal to the lowest one
             lowest_score_TF_IDF = vector_research(all_words, total_dictionary, mat, min_vector)
-            print("Least important word(s) in the document corpus: ", end = "")
+            print("Least important word(s) in the corpus: ", end = "")
             # Call the function display
             display(lowest_score_TF_IDF, ", ")
             print()
 
         if choice == 2:
             # Looking for the most important words (highest TD-IDF score)
-            max_vector = sum(max(mat))  # Calculate the sum highest vector's values in the TF-IDF matrix
+            max_vector = sum(max(mat))  # Calculate the sum of the highest vector's values in the TF-IDF matrix
 
             # Call the function vector_research to search all the vectors equal to the highest one
             biggest_score_TF_IDF = vector_research(all_words, total_dictionary, mat, max_vector)
-            print("Most important word(s) in the document corpus: ", end = "")
+            print("Most important word(s) in the corpus: ", end = "")
             # Call the function display
             display(biggest_score_TF_IDF, ", ")
             print()
@@ -132,7 +132,9 @@ if __name__ == '__main__':
             name = 'Chirac'
             # Call the function frequent_word_for_a_president : display the most repeated word(s) by a President
             frequent_words = frequent_word_for_a_president(name, dictionary_of_files)
-            print(f"Most repeated word(s) by President {name} :", frequent_words)
+            print(f"Most repeated word(s) by President {name}: ", end = "")
+            # Call the function display
+            display(frequent_words, ", ")
 
         if choice == 4:
             # Look for who said "nation" and who repeated it the most
@@ -182,7 +184,10 @@ if __name__ == '__main__':
                 # Verify if all presidents are in word_occurrence
                 if len(word_occurrence) == len(presidents_full_name):
                     common_words.append(word)
-            print(common_words)
+
+            print("The common words to all presidents are: ", end = "")
+            # Call the function display
+            display(common_words, ", ")
 
         print("-"*60)
 

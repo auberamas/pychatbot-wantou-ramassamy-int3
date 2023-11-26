@@ -7,6 +7,8 @@ Created on Mon Nov  6 07:08:35 2023
 from main import files_names
 from functions import *
 import string
+import os
+
 
 # Replace all uppercase by lowercase one by one
 def turn_file_in_lowercase(file_list):
@@ -17,7 +19,7 @@ def turn_file_in_lowercase(file_list):
             if char.isupper():
                 line = line.replace(char, chr(ord(char) + 32))
         lowercase_file_list.append(line)
-    return(lowercase_file_list)
+    return lowercase_file_list
 
 
 # Remove punctuation and put space instead of "'" and "-"
@@ -34,8 +36,10 @@ def clean_file(file):
                     line = line.replace(char, "")
         cleaned_file.append(line)
     return cleaned_file
-              
-        
+
+# create a directory to save the cleaned files
+os.mkdir("cleaned")
+
 # Open files in the directory 'spechees' and build a list of lines for each files
 for name in files_names :
     with open("speeches/"+ name, "r", encoding='utf-8') as f: # Encoding to avoid problems with accents

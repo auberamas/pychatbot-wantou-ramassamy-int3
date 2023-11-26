@@ -94,21 +94,19 @@ def dico_IDF(all_words, dico_files):
             if word in dico_files[file] :
                 word_in_file += 1  # Count the number of file where is "word"
         # Log((nb document/ nb document with the word)+1)
-        # Add 1 to avoid IDF = log(1) = 0
-        # Divide by log(10) because decimal log is : log(x) = ln(x)/ln(10) and log = ln in python
-        IDF = log((len(dico_files)/word_in_file) + 1)/log(10)
+        IDF = log10((len(dico_files)/word_in_file) + 1 )   # Add 1 to avoid IDF = log(1) = 0
         IDF_score_dico[word] = IDF
     return IDF_score_dico
 
 
 # Calculate the TF-IDF matrix of the shape : line = word ; column = file
-# Take a list, a dictionary and a list as parameters
+# Take a list and two dictionaries
 def mat_TF_IDF(all_words, dico_files, IDF):
 
     mat = []    
     for word in all_words :
         line = []
-        for file in dico_files.keys() :
+        for file in dico_files :
             if word in dico_files[file] :
                 # TF = occurrence of the word in the file / number of word in the file
                 TF = dico_files[file][word] / sum(dico_files[file].values())
