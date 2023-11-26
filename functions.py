@@ -2,27 +2,29 @@
 """
 Created on Tue Nov  7 19:58:30 2023
 
-@author: Aube
+@authors: Ariel WANTOU, Aube RAMASSAMY
 """
 import os
 from math import *
 
 
-def list_of_files(directory, extension):  # create a list of files name
+# Create a list of files name from a given directory and extension of the files
+def list_of_files(directory, extension):
 
     files_names = []
     for filename in os.listdir(directory):  # scan the list of file in the directory
-        if filename.endswith(extension):  # verify the extention of the file
+        if filename.endswith(extension):  # verify the extension of the file
             files_names.append(filename)
             
     return files_names
 
 
-def name_of_presidents(files_name): # create a list of presidents name
+# Create a list of presidents name from a list of file's name
+def name_of_presidents(files_name):
     
     presidents_name = []
     for name in files_name :
-        name = name.split('_') # create a list : [nomination, name.txt]
+        name = name.split('_')  # Create a list : [nomination, name.txt]
         name[1] = name[1].strip('.txt')  # Clean the name from extension
         
         # Clean the name from numbers
@@ -31,9 +33,9 @@ def name_of_presidents(files_name): # create a list of presidents name
         
         # Add "'"
         if " " in name[1] :
-            sub_name = name[1].split(' ') # We work on the part after the space
+            sub_name = name[1].split(' ')  # We work on the part after the space
             for char in range(len(sub_name[1])-1) :
-                # Try to find an uppercase next to a lowercase to put a "'" between
+                # Try to find an uppercase next to a lowercase to put an apostrophe between
                if sub_name[1][char].islower() and sub_name[1][char+1].isupper() :
                     sub_name[1] = "'".join(sub_name[1][char:char+2]) + sub_name[1][char+2:]
             name[1] = sub_name[0]+" " + sub_name[1]
@@ -45,7 +47,8 @@ def name_of_presidents(files_name): # create a list of presidents name
     return presidents_name
 
 
-# create a dico : {"file_name" : "name"}
+# Create a dictionary as : {"file_name" : "name"}
+# Take three lists as parameters
 def fill_dico(full_name, file_list, name_list):
 
     president_file = {}
@@ -58,6 +61,7 @@ def fill_dico(full_name, file_list, name_list):
 
 
 # Display a list in two different ways
+# "choice" allows to display a list either one element by line or in one line with comma
 def display(liste, choice="\n"):
     count = 0
 
@@ -79,7 +83,8 @@ def count_words(string):  # create a dico : {"word" : occurrence of the word }
     return words_dico
 
 
-# Calcul of the IDF (Inverse Document Frequency)  
+# Calcul the IDF (Inverse Document Frequency)
+# return a dico as : {"word": IDF of the word"}
 def dico_IDF(all_words, dico_files):
     
     IDF_score_dico = dict()
@@ -87,23 +92,26 @@ def dico_IDF(all_words, dico_files):
         word_in_file, IDF = 0, 0
         for file in dico_files :
             if word in dico_files[file] :
-                word_in_file += 1  # Count the number of file where is the word
-                
-        IDF = log((len(dico_files)/word_in_file)+1)  # Add 1 to avoid IDF = log(1) = 0
+                word_in_file += 1  # Count the number of file where is "word"
+        # Log((nb document/ nb document with the word)+1)
+        # Add 1 to avoid IDF = log(1) = 0
+        # Divide by log(10) because decimal log is : log(x) = ln(x)/ln(10) and log = ln in python
+        IDF = log((len(dico_files)/word_in_file) + 1)/log(10)
         IDF_score_dico[word] = IDF
     return IDF_score_dico
 
 
 # Calculate the TF-IDF matrix of the shape : line = word ; column = file
+# Take a list, a dictionary and a list as parameters
 def mat_TF_IDF(all_words, dico_files, IDF):
-    
+
     mat = []    
     for word in all_words :
         line = []
-        for file in dico_files :
+        for file in dico_files.keys() :
             if word in dico_files[file] :
                 # TF = occurrence of the word in the file / number of word in the file
-                TF = (dico_files[file][word]/len(dico_files[file]))
+                TF = dico_files[file][word] / sum(dico_files[file].values())
                 line.append(TF * IDF[word])
             else :
                 line.append(0)
@@ -111,7 +119,8 @@ def mat_TF_IDF(all_words, dico_files, IDF):
     return mat
 
 
-# Create a list of the highest TF-IDF vector
+# Create a list of the highest or lowest TF-IDF vector
+# the parameter "vector" is a list
 def vector_research(all_words, dico_tot, mat, vector):
 
     vect_word = tuple()
@@ -140,6 +149,7 @@ def frequent_word_for_a_president(name, dico_of_files):
 
 
 # Create a dico to know the occurrence of a word in each president's speech
+# Shape of the dico : {"president" : occurrence of the word}
 def term_research(term, dico_files, dico_name ):
     term_in = dict()
     for file in dico_files :
