@@ -62,14 +62,21 @@ def fill_dico(full_name, file_list, name_list):
 
 # Display a list in two different ways
 # "choice" allows to display a list either one element by line or in one line with comma
-def display(liste, choice="\n"):
-    count = 0
+def display(liste, choice="\n", message1="", message2=""):
+    count= 0
+
+    if message1 != "":
+        print()
+        print(message1, end = "")
 
     for name in liste :
         if count == len(liste)-1 and choice != '\n':
             choice = "\n"
         print(name, end=choice)
         count += 1
+
+    if message2!= "":
+        print(message2)
 
 
 # Computation of the occurrence of words in a text
@@ -100,7 +107,6 @@ def dico_IDF(all_words : list, dico_files : dict):
 
 
 # Calculate the TF-IDF matrix of the shape : line = word ; column = file
-# Take a list and two dictionaries
 def mat_TF_IDF(all_words, dico_files, IDF):
 
     mat = []    
@@ -118,8 +124,7 @@ def mat_TF_IDF(all_words, dico_files, IDF):
 
 
 # Create a list of the highest or lowest TF-IDF vector
-# the parameter "vector" is a list
-def vector_research(all_words, dico_tot, mat, vector):
+def vector_research(all_words, dico_tot, mat, vector: list):
 
     vect_word = tuple()
     same_vect = []
@@ -157,3 +162,5 @@ def term_research(term, dico_files, dico_name ):
             else :
                 term_in[dico_name[file]]= dico_files[file][term]
     return term_in
+
+

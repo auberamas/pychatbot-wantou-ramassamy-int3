@@ -5,7 +5,7 @@ Created on Sat Nov  4 14:33:02 2023
 @author: Ariel WANTOU, Aube RAMASSAMY
 """
 from functions import *
-import tkinter
+from tkinter import *
     
 # Call of the function list_of_files
 directory = "./speeches"
@@ -83,34 +83,12 @@ if __name__ == '__main__':
             "5- Who spoke about 'climate' or 'ecology' for the first time",
             "6- Words that all presidents said"]
 
-#----Window------------------------------------------------------------------------------------
+    action =  1
+    while action == 1 :
 
-    # Config
-    window = tkinter.Tk()
-    window.title("Chatbot")
-    window.geometry("600x600+50+10", )
-    window.resizable(width = False, height = False)
-    window.iconbitmap("Image/star.ico")
-    window.config(bg = "#48dbfb")
-
-    # Display the text
-    text1 = Label(window, text="1- Least important word(s) of the corpus")
-    text2 = Label(window, text="2- Most important word(s) of the corpus")
-    text3 = Label(window, text="3- The most repeated word by Chirac")
-    text4 = Label(window, text="4- Who spoke about 'nation' and who repeated it the most")
-    text5 = Label(window, text="5- Who spoke about 'climate' or 'ecology' for the first time")
-    text6 = Label(window, text="6- Words that all presidents said")
-
-
-
-    window.mainloop()
-"""
-    start = 1
-    while start == 1 :
-
+        choice = 0
         print("-" * 60)
         print("Menu of features: ")
-        # Call the function display
         display(menu)
         print()
 
@@ -131,8 +109,6 @@ if __name__ == '__main__':
             # Call the function display
             display(lowest_score_TF_IDF, ", ")
             print()
-            # debug
-            print(len(lowest_score_TF_IDF))
 
         if choice == 2:
             # Looking for the most important words (highest TD-IDF score)
@@ -207,12 +183,9 @@ if __name__ == '__main__':
             # Call the function display
             display(common_words, ", ")
 
-        print("-"*60)
-
-        # Ask the user if he wants to continue to execute actions
-        print()
-        print("Do you want to execute an other action ?")
-        print("YES : 1 ; NO : 0")
-        start = int(input("Enter your choice: "))
-        print()
-"""
+        # Ask the user if he want to execute another action
+        print("Do you want to execute another action?")
+        again = -1
+        while again !=0 and again!= 1:
+            again = int(input("YES: 1, NO: 0 \n"))
+        action = again
