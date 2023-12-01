@@ -85,7 +85,7 @@ def count_words(string):  # create a dico : {"word" : occurrence of the word }
 
 # Calcul the IDF (Inverse Document Frequency)
 # return a dico as : {"word": IDF of the word"}
-def dico_IDF(all_words, dico_files):
+def dico_IDF(all_words : list, dico_files : dict):
     
     IDF_score_dico = dict()
     for word in all_words :
@@ -112,7 +112,7 @@ def mat_TF_IDF(all_words, dico_files, IDF):
                 TF = dico_files[file][word] / sum(dico_files[file].values())
                 line.append(TF * IDF[word])
             else :
-                line.append(0)
+                line.append(0.0)
         mat.append(line)   
     return mat
 

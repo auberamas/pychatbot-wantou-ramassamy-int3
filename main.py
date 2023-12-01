@@ -5,12 +5,34 @@ Created on Sat Nov  4 14:33:02 2023
 @author: Ariel WANTOU, Aube RAMASSAMY
 """
 from functions import *
+from colors import *
+import pygame
+import os
     
 # Call of the function list_of_files
 directory = "./speeches"
 files_names = list_of_files(directory, "txt")
 
 if __name__ == '__main__':
+
+    # ---- Interface--------------------------------------------------------------------------------
+    pygame.init()
+
+    # Text
+    title_font = pygame.font.Font(None, 40)
+    score_surface = title_font.render("Score", True, Colors.white)
+    next_surface = title_font.render("Next", True, Colors.white)
+    game_over_surface = title_font.render("GAME OVER", True, Colors.white)
+
+    # SURFACES LIEES AUX TITRES
+    score_rect = pygame.Rect(320, 55, 170, 60)
+    next_rect = pygame.Rect(320, 215, 170, 180)
+
+    # DISPLAY SURFACE
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (400, 100)  # position fenetre
+    pygame.display.set_caption("Chatbot")  # find a name for the Chatbot
+    screen = pygame.display.set_mode((500, 620))  # surface d'affichage
+    # -----------------------------------------------------------------------------------------------------------
 
     # Call of the function name_of_presidents
     presidents_name = name_of_presidents(files_names) # Return a list of president's name
@@ -72,6 +94,11 @@ if __name__ == '__main__':
     IDF = dico_IDF(all_words, dictionary_of_files)
     # Call the functions mat_TF_IDF
     mat = mat_TF_IDF(all_words, dictionary_of_files, IDF)
+
+    #debug
+    for i in range(len(all_words)) :
+        print(all_words[i],mat[i])
+    print(total_dictionary)
 
 # ----Features---------------------------------------------------------------------------------
 
