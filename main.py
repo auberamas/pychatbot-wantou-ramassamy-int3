@@ -5,34 +5,13 @@ Created on Sat Nov  4 14:33:02 2023
 @author: Ariel WANTOU, Aube RAMASSAMY
 """
 from functions import *
-from colors import *
-import pygame
-import os
+import tkinter
     
 # Call of the function list_of_files
 directory = "./speeches"
 files_names = list_of_files(directory, "txt")
 
 if __name__ == '__main__':
-
-    # ---- Interface--------------------------------------------------------------------------------
-    pygame.init()
-
-    # Text
-    title_font = pygame.font.Font(None, 40)
-    score_surface = title_font.render("Score", True, Colors.white)
-    next_surface = title_font.render("Next", True, Colors.white)
-    game_over_surface = title_font.render("GAME OVER", True, Colors.white)
-
-    # SURFACES LIEES AUX TITRES
-    score_rect = pygame.Rect(320, 55, 170, 60)
-    next_rect = pygame.Rect(320, 215, 170, 180)
-
-    # DISPLAY SURFACE
-    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (400, 100)  # position fenetre
-    pygame.display.set_caption("Chatbot")  # find a name for the Chatbot
-    screen = pygame.display.set_mode((500, 620))  # surface d'affichage
-    # -----------------------------------------------------------------------------------------------------------
 
     # Call of the function name_of_presidents
     presidents_name = name_of_presidents(files_names) # Return a list of president's name
@@ -95,11 +74,6 @@ if __name__ == '__main__':
     # Call the functions mat_TF_IDF
     mat = mat_TF_IDF(all_words, dictionary_of_files, IDF)
 
-    #debug
-    for i in range(len(all_words)) :
-        print(all_words[i],mat[i])
-    print(total_dictionary)
-
 # ----Features---------------------------------------------------------------------------------
 
     menu = ["1- Least important word(s) of the corpus",
@@ -109,6 +83,28 @@ if __name__ == '__main__':
             "5- Who spoke about 'climate' or 'ecology' for the first time",
             "6- Words that all presidents said"]
 
+#----Window------------------------------------------------------------------------------------
+
+    # Config
+    window = tkinter.Tk()
+    window.title("Chatbot")
+    window.geometry("600x600+50+10", )
+    window.resizable(width = False, height = False)
+    window.iconbitmap("Image/star.ico")
+    window.config(bg = "#48dbfb")
+
+    # Display the text
+    text1 = Label(window, text="1- Least important word(s) of the corpus")
+    text2 = Label(window, text="2- Most important word(s) of the corpus")
+    text3 = Label(window, text="3- The most repeated word by Chirac")
+    text4 = Label(window, text="4- Who spoke about 'nation' and who repeated it the most")
+    text5 = Label(window, text="5- Who spoke about 'climate' or 'ecology' for the first time")
+    text6 = Label(window, text="6- Words that all presidents said")
+
+
+
+    window.mainloop()
+"""
     start = 1
     while start == 1 :
 
@@ -135,6 +131,8 @@ if __name__ == '__main__':
             # Call the function display
             display(lowest_score_TF_IDF, ", ")
             print()
+            # debug
+            print(len(lowest_score_TF_IDF))
 
         if choice == 2:
             # Looking for the most important words (highest TD-IDF score)
@@ -217,3 +215,4 @@ if __name__ == '__main__':
         print("YES : 1 ; NO : 0")
         start = int(input("Enter your choice: "))
         print()
+"""

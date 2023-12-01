@@ -124,7 +124,7 @@ def vector_research(all_words, dico_tot, mat, vector):
     vect_word = tuple()
     same_vect = []
 
-    # Search all vectors equals to the biggest vector
+    # Search all vectors equals to the vector
     for line in range(len(mat)):
         vect_word = (sum(mat[line]),line)
         if vector == vect_word[0] :
