@@ -5,7 +5,8 @@ Created on Sat Nov  4 14:33:02 2023
 @author: Ariel WANTOU, Aube RAMASSAMY
 """
 from functions import *
-from tkinter import *
+from customtkinter import *
+import PIL
     
 # Call of the function list_of_files
 directory = "./speeches"
@@ -20,11 +21,11 @@ if __name__ == '__main__':
     presidents_first_name = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
     presidents_full_name = [presidents_first_name [i] + " " + presidents_name[i] for i in range(len(presidents_first_name ))]
 
-    print("-" * 60)
+    print("-" * 40)
     print("President's name of the corpus: ")
     # Call the function display_full_name to display president name
     display(presidents_full_name)
-    print("-" * 60)
+    print("-" * 40)
     print()
 
     # Call the function fill_dico to create a dictionary as : { 'name of file' : 'president full name'}
@@ -86,67 +87,66 @@ if __name__ == '__main__':
 
 # ----Interface------------------------------------------------------------------------------------
     # Colors
-    # Colors
     colors = {"blue": "#48dbfb", "aqua": "#01a3a4", "apple": "#ea8685",
               "creamy": "#f3a683", "pink": "#f8a5c2", "grey": "#c8d6e5",
               "biscay": "#303952"}
+
     # Config
-    window = Tk()
+    window = CTk()
     window.title("Chatbot")
-    window.geometry("600x600+50+10", )
+    window.geometry("600x600+50+10")
     window.resizable(width=False, height=False)
     window.iconbitmap("Image/star.ico")
-    window.config(bg=colors["biscay"])
-    """
-    bg_image = PhotoImage(file = "img.jpg")
-    cnv = Canvas(window, width= 600, height=600)
-    cnv.pack(fill="both", expand = True)
-    cnv.create_image(0,0, image = bg_image, anchor = "nw")
-    """
-    head = Label(window, width=100, height=5, text="MENU", font=('Arial', 20, "bold"),
-                 bg=colors['biscay'], fg=colors['pink'])
-    head.pack()
-    # Button
-    button1 = Button(window, width=50, height=1, text=menu[0], font=('Arial', 12),
-                     bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
-                     relief=RIDGE,
-                     borderwidth=6,
-                     command=lambda: display(lowest_score_TF_IDF, ", ", "Least important word(s) in the corpus: ")
-                     )
-    button1.pack(pady=6)
-    button2 = Button(window, width=50, height=1, text=menu[1], font=('Arial', 12),
-                     bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
-                     relief=RIDGE, borderwidth=6,
-                     command=lambda: display(biggest_score_TF_IDF, ", ", "Most important word(s) in the corpus: ")
-                     )
-    button2.pack(pady=6)
-    button3 = Button(window, width=50, height=1, text=menu[2], font=('Arial', 12),
-                     bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
-                     relief=RIDGE, borderwidth=6,
-                     command=lambda: display(frequent_words, ", ", "Most repeated word(s) by President Chirac: ")
-                     )
-    button3.pack(pady=6)
-    button4 = Button(window, width=50, height=1, text=menu[3], font=('Arial', 12),
-                     bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
-                     relief=RIDGE, borderwidth=6,
-                     command=lambda: display(nation_repeated, ", ", "The word 'nation' is repeated by: ",
-                                             nation_repeated_most)
-                     )
-    button4.pack(pady=6)
-    button5 = Button(window, width=50, height=1, text=menu[4], font=('Arial', 12),
-                     bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
-                     relief=RIDGE, borderwidth=6,
-                     command=lambda: display([], "", "", climat_oldest)
-                     )
-    button5.pack(pady=6)
-    button6 = Button(window, width=50, height=1, text=menu[5], font=('Arial', 12),
-                     bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
-                     relief=RIDGE, borderwidth=6,
-                     command=lambda: display(common_words, ", ", "The common words to all presidents are: ")
-                     )
-    button6.pack(pady=6)
+    set_appearance_mode("dark")
 
-    # --- Choice1 ---------------------------------------------------------------------------------------
+
+    head = CTkLabel(window, width=100, height=20, text= "MENU",font=('Arial', 30, "bold"),
+        text_color=colors['pink'], fg_color="transparent" )
+    head.place(relx=0.5, rely=0.1, anchor=CENTER)
+
+    message = CTkLabel(window, width=100, height=20, text="What do you whant to know ?", font=('Arial', 16),
+                    text_color="white", fg_color="transparent")
+    message.place(relx=0.5, rely=0.2, anchor=CENTER)
+
+    #Button
+    button1 = CTkButton(window, width=380, text= menu[0],font=('Arial', 14),
+        border_width = 2, border_color= colors['pink'],border_spacing = 3,
+        fg_color=colors['apple'], hover_color=colors['creamy'], corner_radius= 10,
+        command=lambda: display(lowest_score_TF_IDF, ", ", "Least important word(s) in the corpus: "),
+    )
+    button1.place(relx=0.5, rely=0.45, anchor=CENTER)
+
+    button2 = CTkButton(window, width=380, text=menu[1], font=('Arial', 14),
+        fg_color=colors['apple'], hover_color=colors['creamy'], corner_radius= 10,
+        command=lambda: display(biggest_score_TF_IDF, ", ", "Most important word(s) in the corpus: ")
+        )
+    button2.place(relx=0.5, rely=0.52, anchor=CENTER)
+
+    button3 = CTkButton(window, width=380, text=menu[2], font=('Arial', 14),
+        fg_color=colors['apple'], hover_color=colors['creamy'], corner_radius= 10,
+        command=lambda: display(frequent_words, ", ", "Most repeated word(s) by President Chirac: ")
+        )
+    button3.place(relx=0.5, rely=0.59, anchor=CENTER)
+
+    button4 = CTkButton(window, width=380, text=menu[3], font=('Arial', 14),
+        fg_color=colors['apple'], hover_color=colors['creamy'], corner_radius= 10,
+        command=lambda: display(nation_repeated, ", ", "The word 'nation' is repeated by: ",nation_repeated_most)
+        )
+    button4.place(relx=0.5, rely=0.66, anchor=CENTER)
+
+    button5 = CTkButton(window, width=380, text=menu[4], font=('Arial', 14),
+        fg_color=colors['apple'], hover_color=colors['creamy'], corner_radius= 10,
+        command=lambda: display([], "","", climat_oldest)
+        )
+    button5.place(relx=0.5, rely=0.73, anchor=CENTER)
+
+    button6 = CTkButton(window, width=380, text=menu[5], font=('Arial', 14),
+        fg_color=colors['apple'], hover_color=colors['creamy'], corner_radius= 10,
+        command=lambda: display(common_words, ", ", "The common words to all presidents are: ")
+        )
+    button6.place(relx=0.5, rely=0.80, anchor=CENTER)
+
+# --- Choice1 ---------------------------------------------------------------------------------------
     # Looking for the less important words (lowest TD-IDF score)
     min_vector = sum(min(mat))  # Calculate the sum of the lowest vector's values in the TF-IDF matrix
 
