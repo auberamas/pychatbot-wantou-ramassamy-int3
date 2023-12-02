@@ -6,6 +6,7 @@ Created on Sat Nov  4 14:33:02 2023
 """
 from functions import *
 from tkinter import *
+import PIL
     
 # Call of the function list_of_files
 directory = "./speeches"
@@ -85,11 +86,12 @@ if __name__ == '__main__':
             "Words that all presidents said"]
 
 # ----Interface------------------------------------------------------------------------------------
-    # Colors
+
     # Colors
     colors = {"blue": "#48dbfb", "aqua": "#01a3a4", "apple": "#ea8685",
               "creamy": "#f3a683", "pink": "#f8a5c2", "grey": "#c8d6e5",
               "biscay": "#303952"}
+
     # Config
     window = Tk()
     window.title("Chatbot")
@@ -97,15 +99,23 @@ if __name__ == '__main__':
     window.resizable(width=False, height=False)
     window.iconbitmap("Image/star.ico")
     window.config(bg=colors["biscay"])
-    """
-    bg_image = PhotoImage(file = "img.jpg")
-    cnv = Canvas(window, width= 600, height=600)
-    cnv.pack(fill="both", expand = True)
-    cnv.create_image(0,0, image = bg_image, anchor = "nw")
-    """
+
     head = Label(window, width=100, height=5, text="MENU", font=('Arial', 20, "bold"),
                  bg=colors['biscay'], fg=colors['pink'])
-    head.pack()
+
+    def test():
+        text["text"] = "How are you ?"
+
+    text = Label(window, text = "Hello")
+
+    buttontest= Button(window, width=50, height=1, text=menu[0], font=('Arial', 12),
+                     bg=colors['aqua'], activebackground=colors['biscay'], activeforeground=colors['grey'],
+                     relief=RIDGE,
+                     borderwidth=6,
+                     command=test
+                     )
+
+
     # Button
     button1 = Button(window, width=50, height=1, text=menu[0], font=('Arial', 12),
                      bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
@@ -113,37 +123,48 @@ if __name__ == '__main__':
                      borderwidth=6,
                      command=lambda: display(lowest_score_TF_IDF, ", ", "Least important word(s) in the corpus: ")
                      )
-    button1.pack(pady=6)
+
     button2 = Button(window, width=50, height=1, text=menu[1], font=('Arial', 12),
                      bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
                      relief=RIDGE, borderwidth=6,
                      command=lambda: display(biggest_score_TF_IDF, ", ", "Most important word(s) in the corpus: ")
                      )
-    button2.pack(pady=6)
+
     button3 = Button(window, width=50, height=1, text=menu[2], font=('Arial', 12),
                      bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
                      relief=RIDGE, borderwidth=6,
                      command=lambda: display(frequent_words, ", ", "Most repeated word(s) by President Chirac: ")
                      )
-    button3.pack(pady=6)
+
     button4 = Button(window, width=50, height=1, text=menu[3], font=('Arial', 12),
                      bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
                      relief=RIDGE, borderwidth=6,
                      command=lambda: display(nation_repeated, ", ", "The word 'nation' is repeated by: ",
                                              nation_repeated_most)
                      )
-    button4.pack(pady=6)
+
     button5 = Button(window, width=50, height=1, text=menu[4], font=('Arial', 12),
                      bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
                      relief=RIDGE, borderwidth=6,
                      command=lambda: display([], "", "", climat_oldest)
                      )
-    button5.pack(pady=6)
+
     button6 = Button(window, width=50, height=1, text=menu[5], font=('Arial', 12),
                      bg=colors['apple'], activebackground=colors['creamy'], activeforeground=colors['grey'],
                      relief=RIDGE, borderwidth=6,
                      command=lambda: display(common_words, ", ", "The common words to all presidents are: ")
                      )
+
+    # Display texts
+    head.pack()
+    text.pack()
+
+    # Display buttons
+    buttontest.pack(pady=6)
+    button2.pack(pady=6)
+    button3.pack(pady=6)
+    button4.pack(pady=6)
+    button5.pack(pady=6)
     button6.pack(pady=6)
 
     # --- Choice1 ---------------------------------------------------------------------------------------

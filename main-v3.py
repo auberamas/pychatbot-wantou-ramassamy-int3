@@ -6,7 +6,6 @@ Created on Sat Nov  4 14:33:02 2023
 """
 from functions import *
 from customtkinter import *
-import PIL
     
 # Call of the function list_of_files
 directory = "./speeches"
@@ -99,14 +98,17 @@ if __name__ == '__main__':
     window.iconbitmap("Image/star.ico")
     set_appearance_mode("dark")
 
-
     head = CTkLabel(window, width=100, height=20, text= "MENU",font=('Arial', 30, "bold"),
         text_color=colors['pink'], fg_color="transparent" )
     head.place(relx=0.5, rely=0.1, anchor=CENTER)
 
-    message = CTkLabel(window, width=100, height=20, text="What do you whant to know ?", font=('Arial', 16),
+    message = CTkLabel(window, width=100, height=20, text="Hi! What do you want to know ?", font=('Arial', 16),
                     text_color="white", fg_color="transparent")
     message.place(relx=0.5, rely=0.2, anchor=CENTER)
+
+    message1 = CTkLabel(window, width=100, height=20, text="Click on one of the buttons below.", font=('Arial', 16),
+                       text_color="white", fg_color="transparent")
+    message1.place(relx=0.5, rely=0.25, anchor=CENTER)
 
     #Button
     button1 = CTkButton(window, width=380, text= menu[0],font=('Arial', 14),
