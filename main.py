@@ -5,7 +5,6 @@ Created on Sat Nov  4 14:33:02 2023
 @author: Ariel WANTOU, Aube RAMASSAMY
 """
 from functions import *
-from tkinter import *
     
 # Call of the function list_of_files
 directory = "./speeches"
@@ -74,118 +73,148 @@ if __name__ == '__main__':
     # Call the functions mat_TF_IDF
     mat = mat_TF_IDF(all_words, dictionary_of_files, IDF)
 
+    #debug
+    #for i in range(len(all_words)) :
+    #   print(all_words[i],mat[i], sum(mat[i]))
 # ----Features---------------------------------------------------------------------------------
 
-    menu = ["1- Least important word(s) of the corpus",
-            "2- Most important word(s) of the corpus",
-            "3- The most repeated word by Chirac",
-            "4- Who spoke about 'nation' and who repeated it the most",
-            "5- Who spoke about 'climate' or 'ecology' for the first time",
-            "6- Words that all presidents said"]
+    Do = 0
+    print( "Actions:")
+    print("- 1 to choose an action from the menu")
+    print("- 2 to ask a question")
+    Do = int(input("What do you want to do: " ))
+    if Do == 1 :
 
-    action =  1
-    while action == 1 :
+        menu = ["1- Least important word(s) of the corpus",
+                "2- Most important word(s) of the corpus",
+                "3- The most repeated word by Chirac",
+                "4- Who spoke about 'nation' and who repeated it the most",
+                "5- Who spoke about 'climate' or 'ecology' for the first time",
+                "6- Words that all presidents said"]
 
-        choice = 0
-        print("-" * 60)
-        print("Menu of features: ")
-        display(menu)
-        print()
+        action =  1
+        while action == 1 :
 
-        # Ask the user to choice an action in the menu
-        choice = 0
-        # Verify that "choice" is available in the menu
-        while choice < 1 or choice > len(menu):
-            choice = int(input("Choose an action in the menu, enter it's number: "))
-        print()
-
-        if choice == 1:
-            # Looking for the less important words (lowest TD-IDF score)
-            min_vector = sum(min(mat))  # Calculate the sum of the lowest vector's values in the TF-IDF matrix
-
-            # Call the function vector_research to search all the vectors equal to the lowest one
-            lowest_score_TF_IDF = vector_research(all_words, total_dictionary, mat, min_vector)
-            print("Least important word(s) in the corpus: ", end = "")
-            # Call the function display
-            display(lowest_score_TF_IDF, ", ")
+            choice = 0
+            print("-" * 60)
+            print("Menu of features: ")
+            display(menu)
             print()
 
-        if choice == 2:
-            # Looking for the most important words (highest TD-IDF score)
-            max_vector = sum(max(mat))  # Calculate the sum of the highest vector's values in the TF-IDF matrix
-
-            # Call the function vector_research to search all the vectors equal to the highest one
-            biggest_score_TF_IDF = vector_research(all_words, total_dictionary, mat, max_vector)
-            print("Most important word(s) in the corpus: ", end = "")
-            # Call the function display
-            display(biggest_score_TF_IDF, ", ")
+            # Ask the user to choice an action in the menu
+            choice = 0
+            # Verify that "choice" is available in the menu
+            while choice < 1 or choice > len(menu):
+                choice = int(input("Choose an action in the menu, enter it's number: "))
             print()
 
-        if choice == 3:
-            # Look for the most frequent word of a president
-            name = 'Chirac'
-            # Call the function frequent_word_for_a_president : display the most repeated word(s) by a President
-            frequent_words = frequent_word_for_a_president(name, dictionary_of_files)
-            print(f"Most repeated word(s) by President {name}: ", end = "")
-            # Call the function display
-            display(frequent_words, ", ")
+            if choice == 1:
+                # Look for the less important words (lowest TD-IDF score)
+                min_vector = sum(min(mat))  # Calculate the sum of the lowest vector's values in the TF-IDF matrix
 
-        if choice == 4:
-            # Look for who said "nation" and who repeated it the most
-            word = 'nation'
-            # Call the function term_research
-            repeated = term_research(word, dictionary_of_files, dico_presidents)
+                # Call the function vector_research to search all the vectors equal to the lowest one
+                lowest_score_TF_IDF = vector_research(all_words, mat, min_vector)
+                print("Least important word(s) in the corpus: ", end = "")
+                # Call the function display
+                display(lowest_score_TF_IDF, ", ")
+                print()
 
-            print(f"The word '{word}' is repeated by: ", end="")
-            # Call the function display to display presidents who spoke about 'nation'
-            display(repeated.keys(), ", ")
+            if choice == 2:
+                # Looking for the most important words (highest TD-IDF score)
 
-            # Look for who repeated 'nation' the most
-            max_word = max(repeated.values()) # keep the occurrence of the most repeated word
-            for name in repeated:
-                if repeated[name] == max_word:
-                    president = name
-                    print(f'{president} is the one who repeated {word} the most.')
+                # Call the function vector_research to search all the vectors equal to the highest one
+                biggest_score_TF_IDF = score_research(all_words, mat)
+                print("Most important word(s) in the corpus: ", end = "")
+                # Call the function display
+                display(biggest_score_TF_IDF, "")
+                print()
 
-        if choice == 5:
-            # Look for who said "climat" or "écologie" and who repeated it the most
-            word1 = 'climat'
-            word2 = 'écologie'
+            if choice == 3:
+                # Look for the most frequent word of a president
+                name = 'Chirac'
 
-            # Call the function term_research for word1 and word2
-            # Return a dico as : {president : occurrence of the word}
-            repeated1 = term_research(word1, dictionary_of_files, dico_presidents)
-            repeated2 = term_research(word2, dictionary_of_files, dico_presidents)
+                # Look for the less important words (lowest TD-IDF score)
+                min_vector = sum(min(mat))
+                # Call the function vector_research to search all the vectors equal to the lowest one
+                lowest_score_TF_IDF = vector_research(all_words, mat, min_vector)
 
-            # Comparing the values of date_president for names in repeated to know who is the oldest
-            repeated = repeated1 | repeated2
-            oldest = 2023
-            for name in repeated.keys():
-                if date_president[name] < oldest:
-                    name_oldest = name
-                    oldest = date_president[name]
-            print(f'{name_oldest} is the first president to talk about "{word1}" or "{word2}".')
+                # Call the function frequent_word_for_a_president : display the most repeated word(s) by a President
+                frequent_words = frequent_word_for_a_president(name, dictionary_of_files, lowest_score_TF_IDF)
+                print(f"Most repeated word(s) by President {name}: ", end = "")
+                # Call the function display
+                display(frequent_words, ", ")
 
-        if choice == 6:
-            # Look for the words said by all presidents
-            common_words = []
-            word_occurrence = dict()
+            if choice == 4:
+                # Look for who said "nation" and who repeated it the most
+                word = 'nation'
+                # Call the function term_research
+                repeated = term_research(word, dictionary_of_files, dico_presidents)
 
-            for word in all_words:
-                # Call the function term_research : give the presidents who said the word and how much
-                word_occurrence = term_research(word, dictionary_of_files, dico_presidents)
+                print(f"The word '{word}' is repeated by: ", end="")
+                # Call the function display to display presidents who spoke about 'nation'
+                display(repeated.keys(), ", ")
 
-                # Verify if all presidents are in word_occurrence
-                if len(word_occurrence) == len(presidents_full_name):
-                    common_words.append(word)
+                # Look for who repeated 'nation' the most
+                max_word = max(repeated.values()) # keep the occurrence of the most repeated word
+                for name in repeated:
+                    if repeated[name] == max_word:
+                        president = name
+                        print(f'{president} is the one who repeated {word} the most.')
 
-            print("The common words to all presidents are: ", end = "")
-            # Call the function display
-            display(common_words, ", ")
+            if choice == 5:
+                # Look for who said "climat" or "écologie" and who repeated it the most
+                word1 = 'climat'
+                word2 = 'écologie'
 
-        # Ask the user if he want to execute another action
-        print("Do you want to execute another action?")
-        again = -1
-        while again !=0 and again!= 1:
-            again = int(input("YES: 1, NO: 0 \n"))
-        action = again
+                # Call the function term_research for word1 and word2
+                # Return a dico as : {president : occurrence of the word}
+                repeated1 = term_research(word1, dictionary_of_files, dico_presidents)
+                repeated2 = term_research(word2, dictionary_of_files, dico_presidents)
+
+                # Comparing the values of date_president for names in repeated to know who is the oldest
+                repeated = repeated1 | repeated2
+                oldest = 2023
+                for name in repeated.keys():
+                    if date_president[name] < oldest:
+                        name_oldest = name
+                        oldest = date_president[name]
+                print(f'{name_oldest} is the first president to talk about "{word1}" or "{word2}".')
+
+            if choice == 6:
+                # Look for the words said by all presidents
+                common_words = []
+                word_occurrence = dict()
+
+                # Look for the less important words (lowest TD-IDF score)
+                min_vector = sum(min(mat))
+                # Call the function vector_research to search all the vectors equal to the lowest one
+                lowest_score_TF_IDF = vector_research(all_words, mat, min_vector)
+
+                for word in all_words:
+                    if word not in lowest_score_TF_IDF :
+                        # Call the function term_research : give the presidents who said the word and how much
+                        word_occurrence = term_research(word, dictionary_of_files, dico_presidents)
+
+                        # Verify if all presidents are in word_occurrence
+                        if len(word_occurrence) == len(presidents_full_name):
+                            common_words.append(word)
+
+                print("The common words to all presidents are: ", end = "")
+                # Call the function display
+                display(common_words, ", ")
+                print()
+
+            # Ask the user if he wants to execute another action
+            print("Do you want to execute another action?")
+            again = -1
+            while again !=0 and again!= 1:
+                again = int(input("YES: 1, NO: 0 \n"))
+            action = again
+
+# ---- Question ----------------------------------------------------------------
+
+    if Do == 2 :
+
+        question = input("Enter your question: ")
+        list_question = question_treatment([question])
+        intersection_question_corpus = set(all_words) & set(list_question)

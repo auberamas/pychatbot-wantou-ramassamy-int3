@@ -6,6 +6,7 @@ Created on Tue Nov  7 19:58:30 2023
 """
 import os
 from math import *
+import string
 
 
 # Create a list of files name from a given directory and extension of the files
@@ -17,6 +18,32 @@ def list_of_files(directory, extension):
             files_names.append(filename)
             
     return files_names
+
+
+# Replace all uppercase by lowercase one by one
+def turn_text_in_lowercase(file_list):
+    lowercase_file_list = []
+    for line in file_list:
+        for char in line:
+            if char.isupper():
+                line = line.replace(char, chr(ord(char) + 32))
+        lowercase_file_list.append(line)
+    return lowercase_file_list
+
+
+# Remove punctuation and put space instead of "'" and "-"
+def clean_text(file):
+    ponctuation = string.punctuation  # list of all punctuation
+    cleaned_file = []
+    for line in file:
+        for char in line:
+            if char in ponctuation:
+                if char != "'" or char != "-":
+                    line = line.replace(char, " ")
+                else:
+                    line = line.replace(char, "")
+        cleaned_file.append(line)
+    return cleaned_file
 
 
 # Create a list of presidents name from a list of file's name
@@ -101,7 +128,7 @@ def dico_IDF(all_words : list, dico_files : dict):
             if word in dico_files[file] :
                 word_in_file += 1  # Count the number of file where is "word"
         # Log((nb document/ nb document with the word)+1)
-        IDF = log10((len(dico_files)/word_in_file) + 1 )   # Add 1 to avoid IDF = log(1) = 0
+        IDF = log10((len(dico_files)/word_in_file) )   # Add 1 to avoid IDF = log(1) = 0
         IDF_score_dico[word] = IDF
     return IDF_score_dico
 
@@ -115,7 +142,7 @@ def mat_TF_IDF(all_words, dico_files, IDF):
         for file in dico_files :
             if word in dico_files[file] :
                 # TF = occurrence of the word in the file / number of word in the file
-                TF = dico_files[file][word] / sum(dico_files[file].values())
+                TF = dico_files[file][word]
                 line.append(TF * IDF[word])
             else :
                 line.append(0.0)
@@ -124,7 +151,7 @@ def mat_TF_IDF(all_words, dico_files, IDF):
 
 
 # Create a list of the highest or lowest TF-IDF vector
-def vector_research(all_words, dico_tot, mat, vector: list):
+def vector_research(all_words, mat, vector: list):
 
     vect_word = tuple()
     same_vect = []
@@ -138,14 +165,38 @@ def vector_research(all_words, dico_tot, mat, vector: list):
     return same_vect
 
 
+# Return the word with the highest TF-IDF score
+def score_research(all_words, mat):
+
+    list_highest = []
+    highest = ("word", 0.0)
+    for line in range(len(mat)):
+        if highest[1] < max(mat[line]) :
+            highest = (all_words[line], max(mat[line]))
+
+    # Look if there is another word with the same score
+    for line in range(len(mat)):
+        if highest[1] == max(mat[line]) and highest[0] not in list_highest:
+            highest = (all_words[line], max(mat[line]))
+            list_highest.append(highest[0])
+
+    return highest[0]
+
+
 # Create a list with the most repeated word(s) by a president
-def frequent_word_for_a_president(name, dico_of_files):
+def frequent_word_for_a_president(name, dico_of_files,  not_important):
+
     frequent_words = []
     for file in dico_of_files :
         if name in file :
+            # Remove the list important words from the dictionary
+            for word in not_important:
+                if word in dico_of_files[file] :
+                    del dico_of_files[file][word]
+
             most_frequent = max(dico_of_files[file].values())
             for word in dico_of_files[file]:
-                if dico_of_files[file][word] == most_frequent and word not in frequent_words :
+                if dico_of_files[file][word] == most_frequent and word not in frequent_words:
                     frequent_words.append(word)
 
     return frequent_words
@@ -163,4 +214,13 @@ def term_research(term, dico_files, dico_name ):
                 term_in[dico_name[file]]= dico_files[file][term]
     return term_in
 
+def question_treatment(list_text):
 
+    list_text = turn_text_in_lowercase(list_text)
+    list_text = clean_text(list_text)
+    list_text = list_text[0].split(" ")
+    for char in list_text :
+        if char == " ":
+            del list_text[char]
+
+    return list_text
