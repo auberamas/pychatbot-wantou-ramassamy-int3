@@ -232,18 +232,29 @@ def question_treatment(list_text):
     return list_text
 
 
-def vector_question(IDF, question_words, question, dico_files):
+# Return the transpose of a matrix
+def transpose_matrix(M):
 
-    vect = [0]*len(dico_files)
+    MT = []
 
-    for word in question_words:
-        TF = question.count(word)/len(question)
-        x = 0
-        for file in dico_files:
-            if word in dico_files[file]:
-                vect[x] += TF * IDF[word]
-            x += 1
+    for col in range(len(M[0])):
+        line = []
+        for row in range(len(M)):
+            line.append(M[row][col])
+        MT.append(line)
+    return MT
 
+
+def vector_question(IDF, intersection_question_corpus, question, all_words):
+
+    vect = []
+
+    for word in all_words :
+        if word in intersection_question_corpus:
+            TF = question.count(word) / len(question)
+            vect.append(TF * IDF[word])
+        else :
+            vect.append(0.0)
     return vect
 
 

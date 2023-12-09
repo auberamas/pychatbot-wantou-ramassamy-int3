@@ -224,7 +224,14 @@ if __name__ == '__main__':
         # Convert the set into a list
         intersection_question_corpus = [*intersection_question_corpus]
 
-        # Faire une transposée de matrice pour mat !!!
+        # Call transpose_matrix
+        T_mat = transpose_matrix(mat)
 
         # Call the function vector_question
-        vect_of_question = vector_question(IDF, intersection_question_corpus, list_question, dictionary_of_files)
+        vect_of_question = vector_question(IDF, intersection_question_corpus, list_question, all_words)
+
+        #Debug
+        #print(intersection_question_corpus)
+        #print('france', IDF['france'])
+        #for i in range(len(all_words)):
+            #print(all_words[i], vect_of_question[i])
