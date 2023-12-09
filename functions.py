@@ -245,6 +245,7 @@ def transpose_matrix(M):
     return MT
 
 
+# Return the vector of a question
 def vector_question(IDF, intersection_question_corpus, question, all_words):
 
     vect = []
@@ -258,3 +259,45 @@ def vector_question(IDF, intersection_question_corpus, question, all_words):
     return vect
 
 
+# Return the scalar product of 2 vectors
+def scalar_product(vect_A, vect_B):
+
+    res = float()
+    for val in range(len(vect_A)):
+        res += vect_A[val] * vect_B[val]
+    return res
+
+
+# Return the norm of a vector
+def norm(vect):
+
+    res = float()
+    for val in vect:
+        res += val**2
+    res = sqrt(res)
+
+    return res
+
+
+# Return the similarity value of 2 vectors
+def similarity(vect_A, vect_B):
+
+    # Call the function scalar_product
+    scalar_p = scalar_product(vect_A, vect_B)
+    # Call the function norm
+    norm_A, norm_B = norm(vect_A), norm(vect_B)
+    # Compute the similarity
+    similar = scalar_p / (norm_A * norm_B)
+
+    return similar
+
+def higher_similarity(T_mat, vect_question) :
+
+    highest = float()
+
+    for vect in T_mat :
+        res = similarity(vect, vect_question)
+        if highest < res :
+            highest = res
+
+    return highest

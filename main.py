@@ -83,6 +83,8 @@ if __name__ == '__main__':
     print("- 1 to choose an action from the menu")
     print("- 2 to ask a question")
     Do = int(input("What do you want to do: " ))
+    print()
+
     if Do == 1 :
 
         menu = ["1- Least important word(s) of the corpus",
@@ -211,7 +213,7 @@ if __name__ == '__main__':
                 again = int(input("YES: 1, NO: 0 \n"))
             action = again
 
-# ---- Question ----------------------------------------------------------------
+# ---- User's question ----------------------------------------------------------------
 
     if Do == 2 :
 
@@ -230,8 +232,5 @@ if __name__ == '__main__':
         # Call the function vector_question
         vect_of_question = vector_question(IDF, intersection_question_corpus, list_question, all_words)
 
-        #Debug
-        #print(intersection_question_corpus)
-        #print('france', IDF['france'])
-        #for i in range(len(all_words)):
-            #print(all_words[i], vect_of_question[i])
+        # Call the function higher_similarity
+        similarity = higher_similarity(T_mat, vect_of_question)
