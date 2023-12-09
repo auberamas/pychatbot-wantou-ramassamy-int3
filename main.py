@@ -216,5 +216,15 @@ if __name__ == '__main__':
     if Do == 2 :
 
         question = input("Enter your question: ")
+        # Call the function question_treatment to see
         list_question = question_treatment([question])
+
+        # Create a set of the intersection of the words in the question and in the corpus
         intersection_question_corpus = set(all_words) & set(list_question)
+        # Convert the set into a list
+        intersection_question_corpus = [*intersection_question_corpus]
+
+        # Faire une transposée de matrice pour mat !!!
+
+        # Call the function vector_question
+        vect_of_question = vector_question(IDF, intersection_question_corpus, list_question, dictionary_of_files)

@@ -141,7 +141,7 @@ def mat_TF_IDF(all_words, dico_files, IDF):
         line = []
         for file in dico_files :
             if word in dico_files[file] :
-                # TF = occurrence of the word in the file / number of word in the file
+                # TF = occurrence of the word in the file
                 TF = dico_files[file][word]
                 line.append(TF * IDF[word])
             else :
@@ -214,13 +214,36 @@ def term_research(term, dico_files, dico_name ):
                 term_in[dico_name[file]]= dico_files[file][term]
     return term_in
 
+# Return a list of the words from a question
 def question_treatment(list_text):
 
+    # Call the function turn_text_in_lowercase
     list_text = turn_text_in_lowercase(list_text)
+    # Call the function clean_text
     list_text = clean_text(list_text)
+
+    # Create a list of words from list_text
     list_text = list_text[0].split(" ")
+    # Remove spaces from the list
     for char in list_text :
         if char == " ":
             del list_text[char]
 
     return list_text
+
+
+def vector_question(IDF, question_words, question, dico_files):
+
+    vect = [0]*len(dico_files)
+
+    for word in question_words:
+        TF = question.count(word)/len(question)
+        x = 0
+        for file in dico_files:
+            if word in dico_files[file]:
+                vect[x] += TF * IDF[word]
+            x += 1
+
+    return vect
+
+
