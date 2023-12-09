@@ -291,7 +291,8 @@ def similarity(vect_A, vect_B):
 
     return similar
 
-def higher_similarity(T_mat, vect_question) :
+# Return the highest similarity between a vector and a matrix
+def higher_similarity(T_mat, vect_question):
 
     highest = float()
 
