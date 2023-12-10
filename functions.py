@@ -291,14 +291,16 @@ def similarity(vect_A, vect_B):
 
     return similar
 
+
 # Return the highest similarity between a vector and a matrix
-def higher_similarity(T_mat, vect_question):
+def higher_similarity(T_mat, vect_question, files):
 
-    highest = float()
+    highest, document = float(), str()
 
-    for vect in T_mat :
-        res = similarity(vect, vect_question)
+    for vect in range(len(T_mat)):
+        res = similarity(T_mat[vect], vect_question)
         if highest < res :
             highest = res
+            document = files[vect]
 
-    return highest
+    return document

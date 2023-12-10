@@ -217,14 +217,38 @@ if __name__ == '__main__':
 
     if Do == 2 :
 
-        question = input("Enter your question: ")
-        # Call the function question_treatment to see
-        list_question = question_treatment([question])
+        can_answer, count, size = False, 0, 0
 
-        # Create a set of the intersection of the words in the question and in the corpus
-        intersection_question_corpus = set(all_words) & set(list_question)
-        # Convert the set into a list
-        intersection_question_corpus = [*intersection_question_corpus]
+        # Check if the question can be treated
+        while can_answer == False :
+            if count == 0 and size == 0:
+                question = input("Enter your question: ")
+            elif size != 0 :
+                print()
+                print("We are sorry, but this is not a question.")
+                question = input("Enter your question: ")
+            else :
+                print()
+                print("We are sorry, but we can't answer to your question.")
+                question = input("Enter another question: ")
+
+            # Call the function question_treatment to see
+            list_question = question_treatment([question])
+
+            # Create a set of the intersection of the words in the question and in the corpus
+            intersection_question_corpus = set(all_words) & set(list_question)
+            # Convert the set into a list
+            intersection_question_corpus = [*intersection_question_corpus]
+
+            # Check if the intersection_question_corpus is empty
+            # If it's not empty we can answer to the question otherwise the user have to ask something else
+
+            if 0 < len(intersection_question_corpus) < 2:
+                size += 1
+            elif len(intersection_question_corpus) == 0:
+                count += 1
+            else :
+                can_answer = True
 
         # Call transpose_matrix
         T_mat = transpose_matrix(mat)
@@ -233,4 +257,5 @@ if __name__ == '__main__':
         vect_of_question = vector_question(IDF, intersection_question_corpus, list_question, all_words)
 
         # Call the function higher_similarity
-        similarity = higher_similarity(T_mat, vect_of_question)
+        similarity = higher_similarity(T_mat, vect_of_question, files_names)
+        display(similarity, "", "The question is similar to the following text: ")
