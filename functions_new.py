@@ -50,6 +50,7 @@ def clean_text(file:list):
         cleaned_file.append(line)
     return cleaned_file
 
+
 # Display a list in two different ways
 # "choice" allows to display a list either one element by line or in one line with comma
 def display(l, choice="\n", message1="", message2=""):
@@ -66,7 +67,7 @@ def display(l, choice="\n", message1="", message2=""):
         print()
         print(message1, end = "")
 
-    for name in l :
+    for name in l:
         # If we are at the end of the list we go to a new line
         if count == len(l)-1 and choice != '\n':
             choice = "\n"
@@ -74,7 +75,7 @@ def display(l, choice="\n", message1="", message2=""):
         count += 1
     print()
 
-    if message2!= "":
+    if message2 != "":
         print(message2)
 
 
@@ -253,7 +254,7 @@ def vector_research(all_words, mat, vector: float):
 
 
 # Return the word with the highest TF-IDF score
-def score_research(all_words, mat):
+def highest_score(all_words, mat):
     """
 
     :param all_words: list of all the words in the corpus
@@ -312,7 +313,6 @@ def max_occurrence_word(repeated):
 
 def oldest_president(repeated):
 
-    print(repeated)
     oldest= 2023
     date_president = {"Valéry Giscard d'Estaing": 1974, "François Mitterrand": 1981,
                       "Jacques Chirac": 1995, "Nicolas Sarkozy": 2007, "François Hollande": 2012,
@@ -333,21 +333,23 @@ def common_words(dictionary_of_files, less_imp_words):
 
     for file in dictionary_of_files:
         new_set = set()
-    for word in dictionary_of_files[file].keys():
-        new_set.add(word)
-    list_set.append(new_set)
-    print(list_set)
+        for word in dictionary_of_files[file].keys():
+            new_set.add(word)
+        list_set.append(new_set)
 
     common = list_set[0]
     for element in list_set[0:]:
         common = element & common
-    common = common - less_imp_words
+    common = common - {*less_imp_words} # Turn less_imp_words in
 
     return common
 
 
 # Create a dico to know the occurrence of a word in each president's speech
 def term_research(term, dico_files, dico_name ):
+    print(term)
+    print(dico_files)
+    print(dico_name)
     """
 
     :param term:
@@ -456,6 +458,21 @@ def higher_similarity(T_mat, vect_question, files):
 
     return document
 
+
+def answer(word, file):
+
+    with open('./cleaned/'+file, 'r', encoding='utf-8') as f :
+        lines = f.readlines()
+
+    for sentence in range(len(lines)) :
+        if word in lines[sentence] :
+            index_line = sentence
+
+    with open('./speeches/'+file, 'r', encoding='utf-8') as f :
+        lines = f.readlines()
+
+    return(lines[index_line] )
+
 def actions(choice, directory):
 
     if choice == 1:
@@ -464,7 +481,7 @@ def actions(choice, directory):
         display(lowest_score_TF_IDF, ", ", "Least important word(s) in the corpus: ")
 
     elif choice == 2:
-        display(score_research(all_words = dico_tot (directory)[0], mat = mat_TF_IDF(directory)), "", "Most important word(s) in the corpus: " )
+        display(highest_score(all_words = dico_tot (directory)[0], mat = mat_TF_IDF(directory)), "", "Most important word(s) in the corpus: " )
 
     elif choice == 3:
         # Look for the most frequent word of a president
@@ -487,43 +504,74 @@ def actions(choice, directory):
         word1, word2 = 'climat', 'écologie'
 
         # Call the function fill_dico to create a dictionary as : { 'name of file' : 'president full name'}
-        dico_presidents = fill_dico(list_of_files(directory, "txt"), list_of_files(directory, "txt"), name_of_presidents(list_of_files(directory, "txt")))
+        dico_presidents = fill_dico(list_of_names(list_of_files(directory, "txt")), list_of_files(directory, "txt"), name_of_presidents(list_of_files(directory, "txt")))
 
         # Call the function term_research for word1 and word2 and do the intersection of the two sets
         repeated = term_research(word1, dico_tot(directory)[1], dico_presidents) | term_research(word2, dico_tot(directory)[1], dico_presidents)
-        print(repeated)
         display([], message1=f'{oldest_president(repeated)} is the first president to talk about "{word1}" or "{word2}".')
 
     elif choice == 6:
-
+        # Call vector research to have the less important words
+        lowest_score_TF_IDF = vector_research(all_words=dico_tot(directory)[0], mat=mat_TF_IDF(directory),
+                                              vector=sum(min(mat_TF_IDF(directory))))
         # Look for the words said by all presidents
         common = dict()
-        common = common_words(vector_research(all_words=dico_tot(directory)[0], mat=mat_TF_IDF(directory), vector = 0.0) )
-        if common != {}:
+        common = common_words(dico_tot(directory)[1], lowest_score_TF_IDF)
+        if common != set():
             message = "The common words to all presidents are: "
         else:
-            message = "There are no common words to all presidents."
+            message = "There are no common words to all presidents.\n"
 
-        display(common, "", message)
+        display(common, ", ", message)
+
+def begin_answer(question):
+
+    begin = str()
+
+    question_starters = {
+        "comment": "Après analyse, c'est ",
+        "pourquoi": "Car, ",
+        "peux tu": "Oui, bien sûr!",
+        "qu est ce que" : "Il semblerait que ",
+        "est ce que": "Il semblerait que ",
+    }
+    for word in question_starters.keys():
+        if word in question[:3]:
+            begin = question_starters[word]
+
+    return begin
+
+def question(directory):
+    question = input("Enter your question: ")
+    print()
+    begin = str()
+
+    # Convert the set intersection into a list
+    intersection_question_corpus = [*set(dico_tot(directory)[0]) & set(question_treatment([question]))]
+
+    # Call the function vector_question
+    vect_of_question = vector_question(dico_IDF(directory), intersection_question_corpus,
+                                       question_treatment([question]), dico_tot(directory)[0])
+
+    # Call the function higher_similarity
+    similarity = higher_similarity(transpose_matrix(mat_TF_IDF(directory)), vect_of_question,
+                                   list_of_files(directory, "txt"))
+
+    highest_TF_IDF = dico_tot(directory)[0][vect_of_question.index(max(vect_of_question))]
+    begin = begin_answer(question_treatment([question]))
+    response = answer(highest_TF_IDF, similarity)
+    if begin != str():
+        response = chr(ord(response[0])+32)+ response[1:]
+
+    display([response], message1=begin)
 
 
-def question():
+    """
     try:
-        question = input("Enter your question: ")
-
-        # Convert the set intersection into a list
-        intersection_question_corpus = [*set(dico_tot(directory)[0]) & set(question_treatment([question]))]
-
-        # Call the function vector_question
-        vect_of_question = vector_question(dico_IDF(directory), intersection_question_corpus, question_treatment([question]), dico_tot(directory)[0])
-
-        # Call the function higher_similarity
-        similarity = higher_similarity(transpose_matrix(mat_TF_IDF(directory)), vect_of_question, list_of_files(directory, "txt"))
-        display(similarity, "", "The question is similar to the following text: ")
-
+        
     except:
         print("Enter something else")
-
+    """
 
 
 def play(launch, directory):
@@ -534,7 +582,7 @@ def play(launch, directory):
         actions(choice, directory)
     elif Do == 2:
         # Call the function question
-        question()
+        question(directory)
 
     """
     try:
