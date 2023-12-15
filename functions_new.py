@@ -16,7 +16,11 @@ import string
 
 # Create a list of files name from a given directory and extension of the files
 def list_of_files(directory: str, extension: str):
-
+    """
+    :param directory: name of the repertory were are the files
+    :param extension: extension of the files
+    :return: the list of file's name in the directory
+    """
     files_names = []
     for filename in os.listdir(directory):  # scan the list of file in the directory
         if filename.endswith(extension):  # verify the extension of the file
@@ -26,7 +30,11 @@ def list_of_files(directory: str, extension: str):
 
 
 # Replace all uppercase by lowercase one by one
-def turn_text_in_lowercase(file_list: list):
+def turn_text_in_lowercase(file_list):
+    """
+    :param file_list: list of str
+    :return: list of str in lowercase
+    """
     lowercase_file_list = []
     for line in file_list:
         for char in line:
@@ -37,10 +45,14 @@ def turn_text_in_lowercase(file_list: list):
 
 
 # Remove punctuation and put space instead of "'" and "-"
-def clean_text(file:list):
+def clean_text(file_lines):
+    """
+    :param file: list of lines from a file
+    :return: list of lines cleaned from "'" and "-"
+    """
     ponctuation = string.punctuation  # list of all punctuation
     cleaned_file = []
-    for line in file:
+    for line in file_lines:
         for char in line:
             if char in ponctuation:
                 if char != "'" or char != "-":
@@ -55,8 +67,9 @@ def clean_text(file:list):
 # "choice" allows to display a list either one element by line or in one line with comma
 def display(l, choice="\n", message1="", message2=""):
     """
-    :param l: list
-    :param choice: choose if we display one element by line (by default)
+    :param l: list of result to display
+    :param choice: displays one element by line by default, we can also choose to display
+    elements separated by commas
     :param message1: we can choose to display a message before the result
     :param message2: we can choose to display a message after the result
     :return: nothing, just display messages
@@ -81,7 +94,11 @@ def display(l, choice="\n", message1="", message2=""):
 
 # Create a list of presidents name from a list of file's name
 # Return a list of president's name
-def name_of_presidents(files_name:list):
+def name_of_presidents(files_name):
+    """
+    :param files_name: list of files names
+    :return: list of names from files names
+    """
     
     presidents_name = []
     for name in files_name :
@@ -108,7 +125,7 @@ def name_of_presidents(files_name:list):
     return presidents_name
 
 
-# Return the list of président's names
+# Return the list of president's names
 def list_of_names(files_names):
     # Call the function name_of_presidents
     presidents_name = name_of_presidents(files_names)
@@ -162,6 +179,13 @@ def count_words(string):  # create a dico : {"word" : occurrence of the word }
     return words_dico
 
 
+def open_file(directory, file):
+
+    with open(directory + "/" + file, "r", encoding='utf-8') as opened_file:
+        lines = opened_file.readlines()
+
+    return lines
+
 # Creation of a dictionary of the occurrence of words for each file saved in dictionary_of_files
 # Creation of a dictionary of words occurrence for the corpus
 def dico_tot (directory):
@@ -172,25 +196,18 @@ def dico_tot (directory):
 
     # Call of the function list_of_files
     files_names = list_of_files(directory, "txt")
-    # Open each file of the directory
     for file in files_names:
-        dico_of_file, string_of_file = {}, str()  # Start with empty dico and string for each file
-        with open(directory + "/" + file, "r", encoding='utf-8') as opened_file:
-            lines = opened_file.readlines()
-            # Call the function str_of_file
-            string_of_file = str_of_file(lines)
-
+        dico_of_file, string_of_file = {}, str()
+        # Call the function open_file, then str_of_file
+        string_of_file = str_of_file(open_file(directory, file))
         # Call the function count_words which returns a dico as : {"word" : occurrence} for each file
         dico_of_file = count_words(string_of_file)
         # Fill the dico dictionary_of_files as : {"file name" : dico of the file }
         dictionary_of_files[file] = dico_of_file
 
-        # Create a string which is the concatenation of the string of all the corpus
         total_string += string_of_file
-
         # Call the function count_words
         total_dictionary = count_words(total_string)
-
         # Create a list of total_dictionary's keys
         all_words = [*total_dictionary.keys()]
         all_words.sort()
@@ -211,7 +228,7 @@ def dico_IDF(directory):
             if word in dico_files[file] :
                 word_in_file += 1  # Count the number of file where is "word"
         # Log((nb document/ nb document with the word)+1)
-        IDF = log10((len(dico_files)/word_in_file) )   # Add 1 to avoid IDF = log(1) = 0
+        IDF = log10((len(dico_files)/word_in_file) )
         IDF_score_dico[word] = IDF
     return IDF_score_dico
 
@@ -313,7 +330,7 @@ def max_occurrence_word(repeated):
 
 def oldest_president(repeated):
 
-    oldest= 2023
+    oldest = 2023
     date_president = {"Valéry Giscard d'Estaing": 1974, "François Mitterrand": 1981,
                       "Jacques Chirac": 1995, "Nicolas Sarkozy": 2007, "François Hollande": 2012,
                       "Emmanuel Macron": 2017}
@@ -405,7 +422,7 @@ def vector_question(IDF, intersection_question_corpus, question, all_words):
 
     for word in all_words :
         if word in intersection_question_corpus:
-            TF = question.count(word) / len(question)
+            TF = question.count(word)
             vect.append(TF * IDF[word])
         else :
             vect.append(0.0)
@@ -461,19 +478,16 @@ def higher_similarity(T_mat, vect_question, files):
 
 def answer(word, file):
 
-    with open('./cleaned/'+file, 'r', encoding='utf-8') as f :
-        lines = f.readlines()
-
+    sentence = str()
+    lines = open_file('cleaned', file)
     for sentence in range(len(lines)) :
         if word in lines[sentence] :
             index_line = sentence
 
-    with open('./speeches/'+file, 'r', encoding='utf-8') as f :
-        lines = f.readlines()
+    sentence = open_file('speeches', file)[index_line]
+    return sentence
 
-    return lines[index_line]
-
-def actions(choice, directory):
+def features(choice, directory):
 
     if choice == 1:
         # Call the function vector_research to search all the vectors equal to the lowest one
@@ -546,7 +560,7 @@ def question(directory):
     try:
         question = input("Enter your question: ")
     except:
-        print("Enter something else")
+        print("Sorry, this question can not be treated, enter something else.")
 
     print()
     begin = str()
@@ -574,21 +588,26 @@ def question(directory):
     display([response], message1=begin)
 
 
-def play(launch, directory):
-    try:
-        Do = int(input("What do you want to do ? Enter the number of an available action :   "))
-        if Do == 1:
+def play(directory):
+
+    action, choice = 0, -1
+    while action != 1 and action != 2:
+        try:
+            action = int(input("What do you want to do ? Enter the number of an available action :   "))
+        except:
+            print("Enter something else.\n")
+
+    if action == 1:
+        while 0 > choice or choice > 7 :
             try:
                 choice = int(input("Choose a feature in the menu, enter it's number: "))
-                actions(choice, directory)
-            except Exception :
-                print("Enter somthing else")
+                features(choice, directory)
+            except:
+                print("Enter something else.\n")
 
-        elif Do == 2:
-            # Call the function question
-            question(directory)
-    except:
-        print("Enter something else")
+    elif action == 2:
+        # Call the function question
+        question(directory)
 
 
 

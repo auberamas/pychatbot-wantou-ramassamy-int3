@@ -6,7 +6,6 @@ Created on Sat Nov  4 14:33:02 2023
 """
 from functions import *
 from tkinter import *
-import PIL
     
 # Call of the function list_of_files
 directory = "./speeches"

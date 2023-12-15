@@ -7,7 +7,7 @@ Created on Mon Nov  6 07:08:35 2023
 role of the file : clean txt files (remove punctuation and uppercase) and store the new files in the new repertory "cleaned"
 """
 
-from functions import *
+from functions_new import *
 import os
 
 # Call of the function list_of_files
@@ -17,10 +17,10 @@ files_names = list_of_files(directory, "txt")
 # create a directory to save the cleaned files
 os.mkdir("cleaned")
 
-# Open files in the directory 'spechees' and build a list of lines for each files
+# Open files in the directory 'speeches' and build a list of lines for each files
 for name in files_names :
-    with open("speeches/"+ name, "r", encoding='utf-8') as f: # Encoding to avoid problems with accents
-        lines = f.readlines()
+    # Call the function open_file which returns the list of file's lines
+    lines = open_file("speeches",name )
 
     # Call the function turn_file_in_lowercase
     file_list_lowercase = turn_text_in_lowercase(lines)
