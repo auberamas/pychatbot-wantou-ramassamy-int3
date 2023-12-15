@@ -129,7 +129,6 @@ def fill_dico(full_name, file_list, name_list):
     :param name_list:
     :return: dictionary
     """
-    print(full_name)
     president_file = {}
     for file in range(len(file_list)):
         for name in range(len(name_list)):
@@ -313,13 +312,14 @@ def max_occurrence_word(repeated):
 
 def oldest_president(repeated):
 
+    print(repeated)
     oldest= 2023
     date_president = {"Valéry Giscard d'Estaing": 1974, "François Mitterrand": 1981,
                       "Jacques Chirac": 1995, "Nicolas Sarkozy": 2007, "François Hollande": 2012,
                       "Emmanuel Macron": 2017}
 
     # Comparing the values of date_president for names in repeated to know who is the oldest
-    for name in repeated.keys():
+    for name in [*repeated]:
         if date_president[name] < oldest:
             name_oldest = name
         oldest = date_president[name]
@@ -477,10 +477,10 @@ def actions(choice, directory):
         word = 'nation'
         # Call the function fill_dico to create a dictionary as : { 'name of file' : 'president full name'}
         dico_presidents = fill_dico(list_of_names(list_of_files(directory, "txt")), list_of_files(directory, "txt"), name_of_presidents(list_of_files(directory, "txt")))
-        display(term_research(word, dico_tot (directory)[1], dico_presidents.keys()), ", ", f"The word '{word}' is repeated by: ")
+        display(term_research(word, dico_tot(directory)[1], dico_presidents), ", ", f"The word '{word}' is repeated by: ")
         # Look for who repeated 'nation' the most
-        president = max_occurrence_word(term_research(word, dico_tot (directory)[1], dico_presidents.keys()))
-        display(term_research(word, dico_tot(directory)[1], dico_presidents.keys()), ", ", f'{president} is the one who repeated {word} the most.')
+        president = max_occurrence_word(term_research(word, dico_tot(directory)[1], dico_presidents))
+        display(term_research(word, dico_tot(directory)[1], dico_presidents), ", ", f'{president} is the one who repeated {word} the most.')
 
     elif choice == 5:
         # Look for who said "climat" or "écologie" and who repeated it the most
@@ -490,8 +490,9 @@ def actions(choice, directory):
         dico_presidents = fill_dico(list_of_files(directory, "txt"), list_of_files(directory, "txt"), name_of_presidents(list_of_files(directory, "txt")))
 
         # Call the function term_research for word1 and word2 and do the intersection of the two sets
-        repeated = term_research(word1, dico_tot (directory)[1], dico_presidents) | term_research(word2, dico_tot (directory)[1], dico_presidents)
-        display([], "",f'{oldest_president(repeated)} is the first president to talk about "{word1}" or "{word2}".')
+        repeated = term_research(word1, dico_tot(directory)[1], dico_presidents) | term_research(word2, dico_tot(directory)[1], dico_presidents)
+        print(repeated)
+        display([], message1=f'{oldest_president(repeated)} is the first president to talk about "{word1}" or "{word2}".')
 
     elif choice == 6:
 
