@@ -29,13 +29,13 @@ if __name__ == '__main__':
     actions =[" 1- To choose an action from the menu",
               " 2- To ask a question"]
 
-    # Call the function display twice to show the menu and the available actions
-    display(menu,message1="Menu of features: \n", message2="-"*60)
-    display(actions, message1="Available actions:\n")
-
 
     launch = 1
     while launch == 1:
+        # Call the function display twice to show the menu and the available actions
+        display(menu, message1="Menu of features: \n", message2="-" * 60)
+        display(actions, message1="Available actions:\n")
+
         # Ask the user to choose what he wants to do
         play(launch, directory)
         try:

@@ -471,7 +471,7 @@ def answer(word, file):
     with open('./speeches/'+file, 'r', encoding='utf-8') as f :
         lines = f.readlines()
 
-    return(lines[index_line] )
+    return lines[index_line]
 
 def actions(choice, directory):
 
@@ -541,8 +541,13 @@ def begin_answer(question):
 
     return begin
 
+
 def question(directory):
-    question = input("Enter your question: ")
+    try:
+        question = input("Enter your question: ")
+    except:
+        print("Enter something else")
+
     print()
     begin = str()
 
@@ -560,46 +565,30 @@ def question(directory):
     highest_TF_IDF = dico_tot(directory)[0][vect_of_question.index(max(vect_of_question))]
     begin = begin_answer(question_treatment([question]))
     response = answer(highest_TF_IDF, similarity)
+
     if begin != str():
         response = chr(ord(response[0])+32)+ response[1:]
+    if response[0] == '-':
+        response = response[1:]
 
     display([response], message1=begin)
 
 
-    """
-    try:
-        
-    except:
-        print("Enter something else")
-    """
-
-
 def play(launch, directory):
-
-    Do = int(input("What do you want to do ? Enter the number of an available action :   "))
-    if Do == 1:
-        choice = int(input("Choose a feature in the menu, enter it's number: "))
-        actions(choice, directory)
-    elif Do == 2:
-        # Call the function question
-        question(directory)
-
-    """
     try:
         Do = int(input("What do you want to do ? Enter the number of an available action :   "))
         if Do == 1:
             try:
                 choice = int(input("Choose a feature in the menu, enter it's number: "))
-                print(choice)
                 actions(choice, directory)
             except Exception :
                 print("Enter somthing else")
 
         elif Do == 2:
             # Call the function question
-            question()
+            question(directory)
     except:
         print("Enter something else")
-    """
+
 
 
