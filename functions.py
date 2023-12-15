@@ -2,7 +2,12 @@
 """
 Created on Tue Nov  7 19:58:30 2023
 
+Name of the Project : My first chatbot
+
 @authors: Ariel WANTOU, Aube RAMASSAMY
+
+role of the file : store all functions of the project
+
 """
 import os
 from math import *
@@ -10,7 +15,7 @@ import string
 
 
 # Create a list of files name from a given directory and extension of the files
-def list_of_files(directory, extension):
+def list_of_files(directory: str, extension: str):
 
     files_names = []
     for filename in os.listdir(directory):  # scan the list of file in the directory
@@ -21,7 +26,7 @@ def list_of_files(directory, extension):
 
 
 # Replace all uppercase by lowercase one by one
-def turn_text_in_lowercase(file_list):
+def turn_text_in_lowercase(file_list: list):
     lowercase_file_list = []
     for line in file_list:
         for char in line:
@@ -32,7 +37,7 @@ def turn_text_in_lowercase(file_list):
 
 
 # Remove punctuation and put space instead of "'" and "-"
-def clean_text(file):
+def clean_text(file:list):
     ponctuation = string.punctuation  # list of all punctuation
     cleaned_file = []
     for line in file:
@@ -47,7 +52,7 @@ def clean_text(file):
 
 
 # Create a list of presidents name from a list of file's name
-def name_of_presidents(files_name):
+def name_of_presidents(files_name:list):
     
     presidents_name = []
     for name in files_name :
@@ -77,7 +82,12 @@ def name_of_presidents(files_name):
 # Create a dictionary as : {"file_name" : "name"}
 # Take three lists as parameters
 def fill_dico(full_name, file_list, name_list):
-
+    """
+    :param full_name: list
+    :param file_list: list
+    :param name_list:
+    :return: dictionary
+    """
     president_file = {}
     for file in range(len(file_list)):
         for name in range(len(name_list)):
@@ -89,15 +99,22 @@ def fill_dico(full_name, file_list, name_list):
 
 # Display a list in two different ways
 # "choice" allows to display a list either one element by line or in one line with comma
-def display(liste, choice="\n", message1="", message2=""):
+def display(l, choice="\n", message1="", message2=""):
+    """
+    :param l: list
+    :param choice: srt
+    :param message1: str
+    :param message2: srt
+    :return: nothing, just display messages
+    """
     count= 0
 
     if message1 != "":
         print()
         print(message1, end = "")
 
-    for name in liste :
-        if count == len(liste)-1 and choice != '\n':
+    for name in l :
+        if count == len(l)-1 and choice != '\n':
             choice = "\n"
         print(name, end=choice)
         count += 1
@@ -167,7 +184,12 @@ def vector_research(all_words, mat, vector: list):
 
 # Return the word with the highest TF-IDF score
 def score_research(all_words, mat):
+    """
 
+    :param all_words: list of all the words in the corpus
+    :param mat: matrix TF-IDF
+    :return: the score of the word
+    """
     list_highest = []
     highest = ("word", 0.0)
     for line in range(len(mat)):
@@ -185,7 +207,13 @@ def score_research(all_words, mat):
 
 # Create a list with the most repeated word(s) by a president
 def frequent_word_for_a_president(name, dico_of_files,  not_important):
+    """
 
+    :param name: it's the name of a président
+    :param dico_of_files: it's the dictionary of file's dictionaries as {name_file:{ 'word' : occurrence},...}
+    :param not_important: it's a list which represents a vector
+    :return: the vector of the most frequent word
+    """
     frequent_words = []
     for file in dico_of_files :
         if name in file :
@@ -203,8 +231,14 @@ def frequent_word_for_a_president(name, dico_of_files,  not_important):
 
 
 # Create a dico to know the occurrence of a word in each president's speech
-# Shape of the dico : {"president" : occurrence of the word}
 def term_research(term, dico_files, dico_name ):
+    """
+
+    :param term:
+    :param dico_files:
+    :param dico_name:
+    :return: a dico as  {"president" : occurrence of the word}
+    """
     term_in = dict()
     for file in dico_files :
         if term in dico_files[file] :

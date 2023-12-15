@@ -2,8 +2,11 @@
 """
 Created on Mon Nov  6 07:08:35 2023
 
-@author: Aube
+@authors: Ariel WANTOU, Aube RAMASSAMY
+
+role of the file : clean txt files (remove punctuation and uppercase) and store the new files in the new repertory "cleaned"
 """
+
 from functions import *
 import os
 

@@ -2,7 +2,11 @@
 """
 Created on Sat Nov  4 14:33:02 2023
 
+Name of the Project : My first chatbot
+
 @author: Ariel WANTOU, Aube RAMASSAMY
+
+role of the file : main file
 """
 from functions import *
     
@@ -122,8 +126,6 @@ if __name__ == '__main__':
                 print()
 
             if choice == 2:
-                # Looking for the most important words (highest TD-IDF score)
-
                 # Call the function vector_research to search all the vectors equal to the highest one
                 biggest_score_TF_IDF = score_research(all_words, mat)
                 print("Most important word(s) in the corpus: ", end = "")
@@ -183,6 +185,34 @@ if __name__ == '__main__':
                 print(f'{name_oldest} is the first president to talk about "{word1}" or "{word2}".')
 
             if choice == 6:
+                """
+                # Look for the less important words (lowest TD-IDF score)
+                min_vector = sum(min(mat))  # Calculate the sum of the lowest vector's values in the TF-IDF matrix
+
+                # Call the function vector_research to search all the vectors equal to the lowest one
+                lowest_score_TF_IDF = vector_research(all_words, mat, min_vector)
+                less_imp_words = set()
+                for i in lowest_score_TF_IDF :
+                    less_imp_words.add(i)
+                """
+
+                list_set = []
+                common_words = set()
+
+                for file in dictionary_of_files :
+                    new_set = set()
+                    for word in dictionary_of_files[file].keys() :
+                        new_set.add(word)
+                    list_set.append(new_set)
+                print(list_set)
+
+                common_words = list_set[0]
+                for element in list_set [0:]:
+                    common_words = element & common_words
+                common_words = common_words - less_imp_words
+
+
+                """
                 # Look for the words said by all presidents
                 common_words = []
                 word_occurrence = dict()
@@ -200,6 +230,7 @@ if __name__ == '__main__':
                         # Verify if all presidents are in word_occurrence
                         if len(word_occurrence) == len(presidents_full_name):
                             common_words.append(word)
+                """
 
                 print("The common words to all presidents are: ", end = "")
                 # Call the function display
@@ -259,3 +290,5 @@ if __name__ == '__main__':
         # Call the function higher_similarity
         similarity = higher_similarity(T_mat, vect_of_question, files_names)
         display(similarity, "", "The question is similar to the following text: ")
+
+# Try except user
