@@ -2,40 +2,17 @@
 """
 Created on Mon Nov  6 07:08:35 2023
 
-@author: Aube
+@authors: Ariel WANTOU, Aube RAMASSAMY
+
+role of the file : clean txt files (remove punctuation and uppercase) and store the new files in the new repertory "cleaned"
 """
-from main import files_names
+
 from functions import *
-import string
 import os
 
-
-# Replace all uppercase by lowercase one by one
-def turn_file_in_lowercase(file_list):
-    
-    lowercase_file_list = []
-    for line in file_list:
-        for char in line:
-            if char.isupper():
-                line = line.replace(char, chr(ord(char) + 32))
-        lowercase_file_list.append(line)
-    return lowercase_file_list
-
-
-# Remove punctuation and put space instead of "'" and "-"
-def clean_file(file):
-    
-    ponctuation = string.punctuation # list of all punctuation
-    cleaned_file = []
-    for line in file :
-        for char in line:
-            if char in ponctuation:
-                if char != "'" or char != "-" :
-                    line = line.replace(char," ")
-                else :
-                    line = line.replace(char, "")
-        cleaned_file.append(line)
-    return cleaned_file
+# Call of the function list_of_files
+directory = "./speeches"
+files_names = list_of_files(directory, "txt")
 
 # create a directory to save the cleaned files
 os.mkdir("cleaned")
@@ -46,11 +23,11 @@ for name in files_names :
         lines = f.readlines()
 
     # Call the function turn_file_in_lowercase
-    file_list_lowercase = turn_file_in_lowercase(lines)
+    file_list_lowercase = turn_text_in_lowercase(lines)
 
     # Call function clean_file to remove punctuation, '-' and "'"
-    cleaned_file = clean_file(file_list_lowercase)
-    
+    cleaned_file = clean_text(file_list_lowercase)
+
     # Write the text in lower case on a new file
     with open("cleaned/" + name, "a", encoding='utf-8') as f :
         for line in cleaned_file:
