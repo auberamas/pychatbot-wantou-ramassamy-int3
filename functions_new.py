@@ -566,8 +566,6 @@ def answer(word, file, directory, first_directory, begin):
     :return: a tuple of string
     """
 
-    print(begin)
-
     sentence, index_line, count = str(), int(), 0
     lines = open_file(directory, file)
     for sentence in range(len(lines)):
@@ -579,9 +577,15 @@ def answer(word, file, directory, first_directory, begin):
     sentence = open_file(first_directory, file)[index_line]
 
     if (begin == str()) or (begin[-2] not in [".", "!"]):
-        response = chr(ord(sentence[0])+32) + sentence[1:]
+        sentence = chr(ord(sentence[0])+32) + sentence[1:]
     if not sentence[0].isalpha():
         sentence = sentence[1:]
+
+    if sentence.isupper():
+        if (begin == str()) or (begin[-2] not in [".", "!"]):
+            sentence = sentence[0] + sentence[1:].lower()
+        else:
+            sentence = sentence.lower()
 
     return sentence, begin
 
@@ -673,27 +677,30 @@ def question(directory, first_directory):
     :param first_directory: string as "./name of the repertory"
     :return: nothing, just allow to call the right functions to display the answer to user's question
     """
+    question, intersection_question_corpus, can_treat = str(), [], False
 
-    question = str()
+    while can_treat != True:
+        try:
+            question = input("Enter your question: ")
+            # Convert the set intersection between the corpus and the question into a list
+            intersection_question_corpus = [*set(dico_tot(directory)[0]) & set(question_treatment([question]))]
+            # Call the function vector_question
+            vect_of_question = vector_question(dico_idf(directory), intersection_question_corpus,question_treatment([question]), dico_tot(directory)[0])
+            # Call the function higher_similarity
+            similar = higher_similarity(transpose_matrix(mat_tf_idf(directory)), vect_of_question,list_of_files(directory, "txt"))
 
-    try:
-        question = input("Enter your question: ")
-    except:
-        print("Sorry, this question can not be treated, enter something else.")
+            can_treat = True
+        except:
+            print("Sorry, this question can not be treated, enter something else.")
 
     print()
     begin = str()
 
-    # Convert the set intersection between the corpus and the question into a list
-    intersection_question_corpus = [*set(dico_tot(directory)[0]) & set(question_treatment([question]))]
-    # Call the function vector_question
-    vect_of_question = vector_question(dico_idf(directory), intersection_question_corpus,question_treatment([question]), dico_tot(directory)[0])
-    # Call the function higher_similarity
-    similar = higher_similarity(transpose_matrix(mat_tf_idf(directory)), vect_of_question, list_of_files(directory, "txt"))
     # Search the word with the highest tf_idf of the question in the list of all words of the corpus
     highest_TF_IDF = dico_tot(directory)[0][vect_of_question.index(max(vect_of_question))]
     # Shape the answer
     response, begin = answer(highest_TF_IDF, similar, directory, first_directory, begin_answer(" ".join(question_treatment([question]))))
+
     display([response], message1=begin)
 
 
@@ -705,20 +712,6 @@ def play(directory, first_directory):
     :return: nothing, just allow to call the right function depending on user's choices
     """
 
-    action, choice = 0, -1
-    while action != 1 and action != 2:
-        action = int(input("What do you want to do ? Enter the number of an available action :   "))
-
-    if action == 1:
-        while 0 > choice or choice > 7:
-            choice = int(input("Choose a feature in the menu, enter it's number: "))
-            features(choice, directory)
-
-    elif action == 2:
-        # Call the function question
-        question(directory, first_directory)
-
-"""
     action, choice = 0, -1
     while action != 1 and action != 2:
         try:
@@ -736,5 +729,4 @@ def play(directory, first_directory):
 
     elif action == 2:
         # Call the function question
-        question(directory)
-"""
+        question(directory, first_directory)

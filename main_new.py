@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     menu = ["1- Least important word(s) of the corpus",
             "2- Most important word(s) of the corpus",
-            "3- The most repeated word by Chirac",
+            "3- The most repeated word(s) by Chirac",
             "4- Who spoke about 'nation' and who repeated it the most",
             "5- Who spoke about 'climate' or 'ecology' for the first time",
             "6- Words that all presidents said"]
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
 # --- Launch the program ------------------------------------------------------------------------
 
-    launch = 1
+    launch, stop = 1, -1
     while launch == 1:
         # Call the function display twice to show the menu and the available actions
         display(menu, message1="-" * 60+"\n" + "Menu of features: \n", message2="-" * 60)
@@ -44,8 +44,11 @@ if __name__ == '__main__':
 
         # Call the function play to ask the user to choose what he wants to do
         play(directory, first_directory)
-        try:
-            launch = int(input("Enter 1 to continue, 0 to stop : "))
-        except:
-            # Displayed if there is an error with the input 'launch'
-            print("Enter somthing else")
+        stop = -1
+        while stop != 0 and stop != 1:
+            try:
+                stop = int(input("Enter 1 to continue, 0 to stop : "))
+            except:
+                # Displayed if there is an error with the input
+                print("You must enter 0 or 1.")
+        launch = stop
