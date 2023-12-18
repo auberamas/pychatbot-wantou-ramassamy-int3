@@ -13,13 +13,22 @@
 We work on a corpus of speeches by French presidents.
 The program give the list of the presidents from the corpus, by default.
 
-### Features
+### Programs
+- main.py
+- function.py
+- clean_files.py
+
+### Functionalities 
+- Features : you can choose one feature between the following
+
 1. Least important(s) words of the corpus 
 2. Most important(s) words of the corpus 
 3. The most repeated word by Chirac 
 4. Who spoke about 'nation' and who repeated it the most 
 5. Who spoke about 'climate' or 'ecology' for the first time 
 6. Words that all presidents said 
+
+- Ask a question: you can ask a question and the Chatbot will give you an answer.
 
 ### Instructions to execute the code
 
@@ -29,9 +38,11 @@ Those cleaned files are saved in a new directory named "cleaned".
 
 #### Executing the main
 Then execute the main.
-When you execute the program a menu displays all the features available.
-To execute a feature input the integer linked to it : a number between 1 and 6 included. 
+When you execute the program, the menu of all the features and the available actions are displayed.
+You can choose to : 
+* Execute a feature : input 1, then enter the integer linked to chosen feature : a number between 1 and 6
+* Ask a question : input 2, then asks your question
 
 Then the program ask you if you want to execute another action : 
 * Input the integer 0 to stop the program
-* Input the integer 1 to continue : the menu is displayed again, you can enter your feature choice as the beginning.
+* Input the integer 1 to continue : the menu and the choice of actions is displayed again, you can enter your feature choice as the beginning

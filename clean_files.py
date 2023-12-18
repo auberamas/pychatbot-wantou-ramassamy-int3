@@ -9,7 +9,7 @@ role of the file :
 - store the new files in the new repertory "cleaned"
 """
 
-from functions_new import *
+from functions import *
 import os
 
 # Call of the function list_of_files
